@@ -1,0 +1,8 @@
+\begindata
+
+  FRAME_MOON_PA_DE440           = 31008
+  FRAME_31008_NAME              = 'MOON_PA_DE440'
+  FRAME_31008_CLASS             = 2
+  FRAME_31008_CLASS_ID          = 31008
+  FRAME_31008_CENTER            = 301
+	

@@ -1,0 +1,23 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+#Static Files
+*.pdf
+*.png
+*.jpeg
+*.svg
+*.gif
+*.tpc
+*.bsp
+*.BSP
+*.tls
+*.mat
+*.npz
+
+#GraceFiles
+*sandbox*.py
+*/GNSSOrbits/*
+*/graveyardOrbits/*
+*/forcedOrbits/*
+

@@ -1,0 +1,518 @@
+%General Mission Analysis Tool(GMAT) Script
+%Created: 2024-06-19 14:45:31
+
+
+%----------------------------------------
+%---------- Solar System User-Modified Values
+%----------------------------------------
+
+GMAT SolarSystem.EphemerisSource = 'DE424';
+GMAT SolarSystem.SPKFilename = 'C:/Users/aeboe/Downloads/gmat-win-R2022a/GMAT/bin/../data/planetary_ephem/spk/DE424AllPlanets.bsp';
+
+%----------------------------------------
+%---------- User-Defined Calculated Points
+%----------------------------------------
+
+Create Barycenter EarthMoonBarycenter;
+GMAT EarthMoonBarycenter.OrbitColor = Gold;
+GMAT EarthMoonBarycenter.TargetColor = DarkGray;
+GMAT EarthMoonBarycenter.BodyNames = {Earth, Luna};
+
+%----------------------------------------
+%---------- Spacecraft
+%----------------------------------------
+
+Create Spacecraft SC1;
+GMAT SC1.DateFormat = UTCModJulian;
+GMAT SC1.Epoch = '57727';
+GMAT SC1.CoordinateSystem = EMBaryRot;
+GMAT SC1.DisplayStateType = Cartesian;
+GMAT SC1.X = 388641.8789831374;
+GMAT SC1.Y = -0.006960738603083882;
+GMAT SC1.Z = -66558.84605419415;
+GMAT SC1.VX = 2.482817229587653e-09;
+GMAT SC1.VY = -0.07982111308382978;
+GMAT SC1.VZ = 2.29658732586735e-08;
+GMAT SC1.DryMass = 1;
+GMAT SC1.Cd = 0;
+GMAT SC1.Cr = 0;
+GMAT SC1.DragArea = 0;
+GMAT SC1.SRPArea = 0;
+GMAT SC1.SPADDragScaleFactor = 1;
+GMAT SC1.SPADSRPScaleFactor = 1;
+GMAT SC1.AtmosDensityScaleFactor = 1;
+GMAT SC1.ExtendedMassPropertiesModel = 'None';
+GMAT SC1.Tanks = {ChemicalTank1};
+GMAT SC1.Thrusters = {ChemicalThruster1};
+GMAT SC1.NAIFId = -10000001;
+GMAT SC1.NAIFIdReferenceFrame = -9000001;
+GMAT SC1.OrbitColor = Red;
+GMAT SC1.TargetColor = Teal;
+GMAT SC1.OrbitErrorCovariance = [ 1e+70 0 0 0 0 0 ; 0 1e+70 0 0 0 0 ; 0 0 1e+70 0 0 0 ; 0 0 0 1e+70 0 0 ; 0 0 0 0 1e+70 0 ; 0 0 0 0 0 1e+70 ];
+GMAT SC1.CdSigma = 1e+70;
+GMAT SC1.CrSigma = 1e+70;
+GMAT SC1.Id = 'SatId';
+GMAT SC1.Attitude = CoordinateSystemFixed;
+GMAT SC1.SPADSRPInterpolationMethod = Bilinear;
+GMAT SC1.SPADSRPScaleFactorSigma = 1e+70;
+GMAT SC1.SPADDragInterpolationMethod = Bilinear;
+GMAT SC1.SPADDragScaleFactorSigma = 1e+70;
+GMAT SC1.AtmosDensityScaleFactorSigma = 1e+70;
+GMAT SC1.ModelFile = 'aura.3ds';
+GMAT SC1.ModelOffsetX = 0;
+GMAT SC1.ModelOffsetY = 0;
+GMAT SC1.ModelOffsetZ = 0;
+GMAT SC1.ModelRotationX = 0;
+GMAT SC1.ModelRotationY = 0;
+GMAT SC1.ModelRotationZ = 0;
+GMAT SC1.ModelScale = 1;
+GMAT SC1.AttitudeDisplayStateType = 'Quaternion';
+GMAT SC1.AttitudeRateDisplayStateType = 'AngularVelocity';
+GMAT SC1.AttitudeCoordinateSystem = EarthMJ2000Eq;
+GMAT SC1.EulerAngleSequence = '321';
+
+Create Spacecraft Python;
+GMAT Python.DateFormat = UTCModJulian;
+GMAT Python.Epoch = '57727';
+GMAT Python.CoordinateSystem = EarthMJ2000Eq;
+GMAT Python.DisplayStateType = Cartesian;
+GMAT Python.X = 25000;
+GMAT Python.Y = 0;
+GMAT Python.Z = 0;
+GMAT Python.VX = 0;
+GMAT Python.VY = 3.992996075630428;
+GMAT Python.VZ = 0;
+GMAT Python.DryMass = 850;
+GMAT Python.Cd = 2.2;
+GMAT Python.Cr = 1.8;
+GMAT Python.DragArea = 15;
+GMAT Python.SRPArea = 1;
+GMAT Python.SPADDragScaleFactor = 1;
+GMAT Python.SPADSRPScaleFactor = 1;
+GMAT Python.AtmosDensityScaleFactor = 1;
+GMAT Python.ExtendedMassPropertiesModel = 'None';
+GMAT Python.NAIFId = -10004001;
+GMAT Python.NAIFIdReferenceFrame = -9004001;
+GMAT Python.OrbitColor = Green;
+GMAT Python.TargetColor = LightGray;
+GMAT Python.OrbitErrorCovariance = [ 1e+70 0 0 0 0 0 ; 0 1e+70 0 0 0 0 ; 0 0 1e+70 0 0 0 ; 0 0 0 1e+70 0 0 ; 0 0 0 0 1e+70 0 ; 0 0 0 0 0 1e+70 ];
+GMAT Python.CdSigma = 1e+70;
+GMAT Python.CrSigma = 1e+70;
+GMAT Python.Id = 'SatId';
+GMAT Python.Attitude = CoordinateSystemFixed;
+GMAT Python.SPADSRPInterpolationMethod = Bilinear;
+GMAT Python.SPADSRPScaleFactorSigma = 1e+70;
+GMAT Python.SPADDragInterpolationMethod = Bilinear;
+GMAT Python.SPADDragScaleFactorSigma = 1e+70;
+GMAT Python.AtmosDensityScaleFactorSigma = 1e+70;
+GMAT Python.ModelFile = 'aura.3ds';
+GMAT Python.ModelOffsetX = 0;
+GMAT Python.ModelOffsetY = 0;
+GMAT Python.ModelOffsetZ = 0;
+GMAT Python.ModelRotationX = 0;
+GMAT Python.ModelRotationY = 0;
+GMAT Python.ModelRotationZ = 0;
+GMAT Python.ModelScale = 1;
+GMAT Python.AttitudeDisplayStateType = 'Quaternion';
+GMAT Python.AttitudeRateDisplayStateType = 'AngularVelocity';
+GMAT Python.AttitudeCoordinateSystem = EarthMJ2000Eq;
+GMAT Python.EulerAngleSequence = '321';
+
+%----------------------------------------
+%---------- Hardware Components
+%----------------------------------------
+
+Create ChemicalTank ChemicalTank1;
+GMAT ChemicalTank1.AllowNegativeFuelMass = false;
+GMAT ChemicalTank1.FuelMass = 756;
+GMAT ChemicalTank1.Pressure = 1500;
+GMAT ChemicalTank1.Temperature = 20;
+GMAT ChemicalTank1.RefTemperature = 20;
+GMAT ChemicalTank1.Volume = 0.75;
+GMAT ChemicalTank1.FuelDensity = 1260;
+GMAT ChemicalTank1.PressureModel = PressureRegulated;
+
+Create ChemicalThruster ChemicalThruster1;
+GMAT ChemicalThruster1.CoordinateSystem = Local;
+GMAT ChemicalThruster1.Origin = Earth;
+GMAT ChemicalThruster1.Axes = VNB;
+GMAT ChemicalThruster1.ThrustDirection1 = 0;
+GMAT ChemicalThruster1.ThrustDirection2 = 0;
+GMAT ChemicalThruster1.ThrustDirection3 = 0;
+GMAT ChemicalThruster1.DutyCycle = 1;
+GMAT ChemicalThruster1.ThrustScaleFactor = 1;
+GMAT ChemicalThruster1.DecrementMass = false;
+GMAT ChemicalThruster1.Tank = {ChemicalTank1};
+GMAT ChemicalThruster1.MixRatio = [ 1 ];
+GMAT ChemicalThruster1.GravitationalAccel = 9.81;
+GMAT ChemicalThruster1.C1 = 1000;
+GMAT ChemicalThruster1.C2 = 0;
+GMAT ChemicalThruster1.C3 = 0;
+GMAT ChemicalThruster1.C4 = 0;
+GMAT ChemicalThruster1.C5 = 0;
+GMAT ChemicalThruster1.C6 = 0;
+GMAT ChemicalThruster1.C7 = 0;
+GMAT ChemicalThruster1.C8 = 0;
+GMAT ChemicalThruster1.C9 = 0;
+GMAT ChemicalThruster1.C10 = 0;
+GMAT ChemicalThruster1.C11 = 0;
+GMAT ChemicalThruster1.C12 = 0;
+GMAT ChemicalThruster1.C13 = 0;
+GMAT ChemicalThruster1.C14 = 0;
+GMAT ChemicalThruster1.C15 = 0;
+GMAT ChemicalThruster1.C16 = 0;
+GMAT ChemicalThruster1.K1 = 300;
+GMAT ChemicalThruster1.K2 = 0;
+GMAT ChemicalThruster1.K3 = 0;
+GMAT ChemicalThruster1.K4 = 0;
+GMAT ChemicalThruster1.K5 = 0;
+GMAT ChemicalThruster1.K6 = 0;
+GMAT ChemicalThruster1.K7 = 0;
+GMAT ChemicalThruster1.K8 = 0;
+GMAT ChemicalThruster1.K9 = 0;
+GMAT ChemicalThruster1.K10 = 0;
+GMAT ChemicalThruster1.K11 = 0;
+GMAT ChemicalThruster1.K12 = 0;
+GMAT ChemicalThruster1.K13 = 0;
+GMAT ChemicalThruster1.K14 = 0;
+GMAT ChemicalThruster1.K15 = 0;
+GMAT ChemicalThruster1.K16 = 0;
+
+
+
+
+
+
+
+
+
+
+
+
+%----------------------------------------
+%---------- ForceModels
+%----------------------------------------
+
+Create ForceModel DefaultProp_ForceModel;
+GMAT DefaultProp_ForceModel.CentralBody = Earth;
+GMAT DefaultProp_ForceModel.PointMasses = {Earth, Luna};
+GMAT DefaultProp_ForceModel.Drag = None;
+GMAT DefaultProp_ForceModel.SRP = Off;
+GMAT DefaultProp_ForceModel.RelativisticCorrection = Off;
+GMAT DefaultProp_ForceModel.ErrorControl = RSSStep;
+
+%----------------------------------------
+%---------- Propagators
+%----------------------------------------
+
+Create Propagator DefaultProp;
+GMAT DefaultProp.FM = DefaultProp_ForceModel;
+GMAT DefaultProp.Type = RungeKutta89;
+GMAT DefaultProp.InitialStepSize = 60;
+GMAT DefaultProp.Accuracy = 1e-07;
+GMAT DefaultProp.MinStep = 0.001;
+GMAT DefaultProp.MaxStep = 2700;
+GMAT DefaultProp.MaxStepAttempts = 50;
+GMAT DefaultProp.StopIfAccuracyIsViolated = true;
+
+%----------------------------------------
+%---------- Burns
+%----------------------------------------
+
+Create ImpulsiveBurn DefaultIB;
+GMAT DefaultIB.CoordinateSystem = Local;
+GMAT DefaultIB.Origin = Earth;
+GMAT DefaultIB.Axes = VNB;
+GMAT DefaultIB.Element1 = 0;
+GMAT DefaultIB.Element2 = 0;
+GMAT DefaultIB.Element3 = 0;
+GMAT DefaultIB.DecrementMass = false;
+GMAT DefaultIB.Tank = {ChemicalTank1};
+GMAT DefaultIB.Isp = 300;
+GMAT DefaultIB.GravitationalAccel = 9.81;
+
+Create FiniteBurn DefaultFB;
+GMAT DefaultFB.Thrusters = {ChemicalThruster1};
+GMAT DefaultFB.ThrottleLogicAlgorithm = 'MaxNumberOfThrusters';
+
+%----------------------------------------
+%---------- Coordinate Systems
+%----------------------------------------
+
+Create CoordinateSystem EMBaryRot;
+GMAT EMBaryRot.Origin = EarthMoonBarycenter;
+GMAT EMBaryRot.Axes = ObjectReferenced;
+GMAT EMBaryRot.XAxis = R;
+GMAT EMBaryRot.ZAxis = N;
+GMAT EMBaryRot.Primary = EarthMoonBarycenter;
+GMAT EMBaryRot.Secondary = Luna;
+
+Create CoordinateSystem EMInert;
+GMAT EMInert.Origin = EarthMoonBarycenter;
+GMAT EMInert.Axes = MJ2000Eq;
+
+Create CoordinateSystem ICRS;
+GMAT ICRS.Origin = SolarSystemBarycenter;
+GMAT ICRS.Axes = ICRF;
+
+%----------------------------------------
+%---------- Solvers
+%----------------------------------------
+
+Create DifferentialCorrector DefaultDC;
+GMAT DefaultDC.ShowProgress = true;
+GMAT DefaultDC.ReportStyle = Normal;
+GMAT DefaultDC.ReportFile = 'DifferentialCorrectorDefaultDC.data';
+GMAT DefaultDC.MaximumIterations = 50;
+GMAT DefaultDC.DerivativeMethod = ForwardDifference;
+GMAT DefaultDC.Algorithm = NewtonRaphson;
+
+%----------------------------------------
+%---------- Subscribers
+%----------------------------------------
+
+Create ReportFile CRTBP_rot_diffcorr;
+GMAT CRTBP_rot_diffcorr.SolverIterations = Current;
+GMAT CRTBP_rot_diffcorr.UpperLeft = [ 0.05705882352941177 0.1169154228855721 ];
+GMAT CRTBP_rot_diffcorr.Size = [ 0.5982352941176471 0.7960199004975125 ];
+GMAT CRTBP_rot_diffcorr.RelativeZOrder = 45;
+GMAT CRTBP_rot_diffcorr.Maximized = false;
+GMAT CRTBP_rot_diffcorr.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\CRTBP_rot_diffcorr.txt';
+GMAT CRTBP_rot_diffcorr.Precision = 16;
+GMAT CRTBP_rot_diffcorr.Add = {SC1.EMBaryRot.X, SC1.EMBaryRot.Y, SC1.EMBaryRot.Z, SC1.UTCModJulian};
+GMAT CRTBP_rot_diffcorr.WriteHeaders = false;
+GMAT CRTBP_rot_diffcorr.LeftJustify = On;
+GMAT CRTBP_rot_diffcorr.ZeroFill = Off;
+GMAT CRTBP_rot_diffcorr.FixedWidth = true;
+GMAT CRTBP_rot_diffcorr.Delimiter = ' ';
+GMAT CRTBP_rot_diffcorr.ColumnWidth = 23;
+GMAT CRTBP_rot_diffcorr.WriteReport = true;
+
+Create ReportFile CRTBP_inert;
+GMAT CRTBP_inert.SolverIterations = Current;
+GMAT CRTBP_inert.UpperLeft = [ 0.03705882352941176 0.07835820895522388 ];
+GMAT CRTBP_inert.Size = [ 0.5988235294117648 0.7972636815920398 ];
+GMAT CRTBP_inert.RelativeZOrder = 32;
+GMAT CRTBP_inert.Maximized = false;
+GMAT CRTBP_inert.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\CRTBP_inert.txt';
+GMAT CRTBP_inert.Precision = 16;
+GMAT CRTBP_inert.Add = {SC1.ICRS.X, SC1.ICRS.Y, SC1.ICRS.Z, SC1.UTCModJulian};
+GMAT CRTBP_inert.WriteHeaders = false;
+GMAT CRTBP_inert.LeftJustify = On;
+GMAT CRTBP_inert.ZeroFill = Off;
+GMAT CRTBP_inert.FixedWidth = true;
+GMAT CRTBP_inert.Delimiter = ' ';
+GMAT CRTBP_inert.ColumnWidth = 23;
+GMAT CRTBP_inert.WriteReport = true;
+
+Create OrbitView Moon_rotview;
+GMAT Moon_rotview.SolverIterations = Current;
+GMAT Moon_rotview.UpperLeft = [ 0.1340465701699182 0.212378640776699 ];
+GMAT Moon_rotview.Size = [ 0.44745122718691 0.4065533980582524 ];
+GMAT Moon_rotview.RelativeZOrder = 198;
+GMAT Moon_rotview.Maximized = false;
+GMAT Moon_rotview.Add = {SC1, Luna};
+GMAT Moon_rotview.CoordinateSystem = EMBaryRot;
+GMAT Moon_rotview.DrawObject = [ false true ];
+GMAT Moon_rotview.DataCollectFrequency = 1;
+GMAT Moon_rotview.UpdatePlotFrequency = 50;
+GMAT Moon_rotview.NumPointsToRedraw = 0;
+GMAT Moon_rotview.ShowPlot = true;
+GMAT Moon_rotview.MaxPlotPoints = 20000;
+GMAT Moon_rotview.ShowLabels = true;
+GMAT Moon_rotview.ViewPointReference = Earth;
+GMAT Moon_rotview.ViewPointVector = [ 0 0 500000 ];
+GMAT Moon_rotview.ViewDirection = Earth;
+GMAT Moon_rotview.ViewScaleFactor = 1;
+GMAT Moon_rotview.ViewUpCoordinateSystem = EMBaryRot;
+GMAT Moon_rotview.ViewUpAxis = Z;
+GMAT Moon_rotview.EclipticPlane = Off;
+GMAT Moon_rotview.XYPlane = On;
+GMAT Moon_rotview.WireFrame = Off;
+GMAT Moon_rotview.Axes = On;
+GMAT Moon_rotview.Grid = Off;
+GMAT Moon_rotview.SunLine = Off;
+GMAT Moon_rotview.UseInitialView = On;
+GMAT Moon_rotview.StarCount = 7000;
+GMAT Moon_rotview.EnableStars = On;
+GMAT Moon_rotview.EnableConstellations = On;
+
+Create ReportFile Moon_inert;
+GMAT Moon_inert.SolverIterations = Current;
+GMAT Moon_inert.UpperLeft = [ 0.1160049627791563 0.2358757062146893 ];
+GMAT Moon_inert.Size = [ 0.597394540942928 0.7937853107344632 ];
+GMAT Moon_inert.RelativeZOrder = 642;
+GMAT Moon_inert.Maximized = true;
+GMAT Moon_inert.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\Moon_inert.txt';
+GMAT Moon_inert.Precision = 16;
+GMAT Moon_inert.Add = {Luna.ICRS.X, Luna.ICRS.Y, Luna.ICRS.Z, Luna.UTCModJulian};
+GMAT Moon_inert.WriteHeaders = false;
+GMAT Moon_inert.LeftJustify = On;
+GMAT Moon_inert.ZeroFill = Off;
+GMAT Moon_inert.FixedWidth = true;
+GMAT Moon_inert.Delimiter = ' ';
+GMAT Moon_inert.ColumnWidth = 23;
+GMAT Moon_inert.WriteReport = true;
+
+Create ReportFile Moon_rot;
+GMAT Moon_rot.SolverIterations = Current;
+GMAT Moon_rot.UpperLeft = [ 0 0 ];
+GMAT Moon_rot.Size = [ 0 0 ];
+GMAT Moon_rot.RelativeZOrder = 0;
+GMAT Moon_rot.Maximized = false;
+GMAT Moon_rot.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\Moon_rot.txt';
+GMAT Moon_rot.Precision = 16;
+GMAT Moon_rot.Add = {Luna.EMBaryRot.X, Luna.EMBaryRot.Y, Luna.EMBaryRot.Z, Luna.UTCModJulian};
+GMAT Moon_rot.WriteHeaders = false;
+GMAT Moon_rot.LeftJustify = On;
+GMAT Moon_rot.ZeroFill = Off;
+GMAT Moon_rot.FixedWidth = true;
+GMAT Moon_rot.Delimiter = ' ';
+GMAT Moon_rot.ColumnWidth = 23;
+GMAT Moon_rot.WriteReport = true;
+
+Create OrbitView ICRF;
+GMAT ICRF.SolverIterations = Current;
+GMAT ICRF.UpperLeft = [ 0.1214600377595972 0.2203389830508475 ];
+GMAT ICRF.Size = [ 0.4222781623662681 0.4067796610169492 ];
+GMAT ICRF.RelativeZOrder = 35;
+GMAT ICRF.Maximized = true;
+GMAT ICRF.Add = {SC1, Earth};
+GMAT ICRF.CoordinateSystem = ICRS;
+GMAT ICRF.DrawObject = [ true true ];
+GMAT ICRF.DataCollectFrequency = 1;
+GMAT ICRF.UpdatePlotFrequency = 50;
+GMAT ICRF.NumPointsToRedraw = 0;
+GMAT ICRF.ShowPlot = false;
+GMAT ICRF.MaxPlotPoints = 20000;
+GMAT ICRF.ShowLabels = true;
+GMAT ICRF.ViewPointReference = Earth;
+GMAT ICRF.ViewPointVector = [ 0 0 30000 ];
+GMAT ICRF.ViewDirection = Earth;
+GMAT ICRF.ViewScaleFactor = 1;
+GMAT ICRF.ViewUpCoordinateSystem = ICRS;
+GMAT ICRF.ViewUpAxis = Z;
+GMAT ICRF.EclipticPlane = Off;
+GMAT ICRF.XYPlane = On;
+GMAT ICRF.WireFrame = Off;
+GMAT ICRF.Axes = On;
+GMAT ICRF.Grid = Off;
+GMAT ICRF.SunLine = Off;
+GMAT ICRF.UseInitialView = On;
+GMAT ICRF.StarCount = 7000;
+GMAT ICRF.EnableStars = On;
+GMAT ICRF.EnableConstellations = On;
+
+Create OrbitView MainView;
+GMAT MainView.SolverIterations = Current;
+GMAT MainView.UpperLeft = [ 0.03272498426683448 0.09466019417475728 ];
+GMAT MainView.Size = [ 0.8363750786658276 0.7451456310679612 ];
+GMAT MainView.RelativeZOrder = 232;
+GMAT MainView.Maximized = true;
+GMAT MainView.Add = {SC1, Python, Earth, Luna};
+GMAT MainView.CoordinateSystem = EMInert;
+GMAT MainView.DrawObject = [ true true true true ];
+GMAT MainView.DataCollectFrequency = 1;
+GMAT MainView.UpdatePlotFrequency = 50;
+GMAT MainView.NumPointsToRedraw = 0;
+GMAT MainView.ShowPlot = true;
+GMAT MainView.MaxPlotPoints = 20000;
+GMAT MainView.ShowLabels = true;
+GMAT MainView.ViewPointReference = Earth;
+GMAT MainView.ViewPointVector = [ 0 0 5000000 ];
+GMAT MainView.ViewDirection = Earth;
+GMAT MainView.ViewScaleFactor = 1;
+GMAT MainView.ViewUpCoordinateSystem = EMInert;
+GMAT MainView.ViewUpAxis = Z;
+GMAT MainView.EclipticPlane = Off;
+GMAT MainView.XYPlane = Off;
+GMAT MainView.WireFrame = Off;
+GMAT MainView.Axes = Off;
+GMAT MainView.Grid = Off;
+GMAT MainView.SunLine = Off;
+GMAT MainView.UseInitialView = On;
+GMAT MainView.StarCount = 7000;
+GMAT MainView.EnableStars = Off;
+GMAT MainView.EnableConstellations = On;
+
+Create ReportFile Moon_EMInert;
+GMAT Moon_EMInert.SolverIterations = Current;
+GMAT Moon_EMInert.UpperLeft = [ 0.07975077881619938 0.1807909604519774 ];
+GMAT Moon_EMInert.Size = [ 0.5993769470404985 0.7980225988700564 ];
+GMAT Moon_EMInert.RelativeZOrder = 706;
+GMAT Moon_EMInert.Maximized = false;
+GMAT Moon_EMInert.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\Moon_EMInert.txt';
+GMAT Moon_EMInert.Precision = 16;
+GMAT Moon_EMInert.Add = {Luna.EMInert.X, Luna.EMInert.Y, Luna.EMInert.Z, Luna.UTCModJulian};
+GMAT Moon_EMInert.WriteHeaders = false;
+GMAT Moon_EMInert.LeftJustify = On;
+GMAT Moon_EMInert.ZeroFill = Off;
+GMAT Moon_EMInert.FixedWidth = true;
+GMAT Moon_EMInert.Delimiter = ' ';
+GMAT Moon_EMInert.ColumnWidth = 23;
+GMAT Moon_EMInert.WriteReport = true;
+
+Create ReportFile Moon_EMRot;
+GMAT Moon_EMRot.SolverIterations = Current;
+GMAT Moon_EMRot.UpperLeft = [ 0 0 ];
+GMAT Moon_EMRot.Size = [ 0 0 ];
+GMAT Moon_EMRot.RelativeZOrder = 0;
+GMAT Moon_EMRot.Maximized = false;
+GMAT Moon_EMRot.Filename = 'C:\Users\aeboe\Documents\Starlift\starlift\orbits\gmatFiles\Moon_EMRot.txt';
+GMAT Moon_EMRot.Precision = 16;
+GMAT Moon_EMRot.Add = {Luna.EMBaryRot.X, Luna.EMBaryRot.Y, Luna.EMBaryRot.Z, Luna.UTCModJulian};
+GMAT Moon_EMRot.WriteHeaders = false;
+GMAT Moon_EMRot.LeftJustify = On;
+GMAT Moon_EMRot.ZeroFill = Off;
+GMAT Moon_EMRot.FixedWidth = true;
+GMAT Moon_EMRot.Delimiter = ' ';
+GMAT Moon_EMRot.ColumnWidth = 23;
+GMAT Moon_EMRot.WriteReport = true;
+
+%----------------------------------------
+%---------- Arrays, Variables, Strings
+%----------------------------------------
+Create Variable BurnDuration;
+GMAT BurnDuration = 0;
+
+
+
+
+
+
+
+
+
+%----------------------------------------
+%---------- Mission Sequence
+%----------------------------------------
+
+BeginMissionSequence;
+Propagate DefaultProp(Python) {Python.ElapsedDays = 30, OrbitColor = [128 0 255]};
+Propagate 'Prop to apoapsis' DefaultProp(SC1) {SC1.Luna.Apoapsis, OrbitColor = [255 255 0]};
+% While SC1.ElapsedDays < 30
+Target 'TargetPosition' DefaultDC {SolveMode = Solve, ExitMode = DiscardAndContinue, ShowProgressWindow = true};
+   Vary 'Vary burn duration' DefaultDC(BurnDuration = 100.9985665878606, {Perturbation = 0.000000001, Lower = 0.0, Upper = 10000, MaxStep = 0.1, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'Vary X thrust direction' DefaultDC(SC1.ChemicalThruster1.ThrustDirection1 = 0.5531389785608934, {Perturbation = 0.000000001, Lower = 0.0, Upper = 500, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'Vary Y thrust direction' DefaultDC(SC1.ChemicalThruster1.ThrustDirection2 = 0.1815230655826842, {Perturbation = 0.000000001, Lower = 0.0, Upper = 500, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   Vary 'Vary Z thrust direction' DefaultDC(SC1.ChemicalThruster1.ThrustDirection3 = 0, {Perturbation = 0.000000001, Lower = 0.0, Upper = 500, MaxStep = 0.01, AdditiveScaleFactor = 0.0, MultiplicativeScaleFactor = 1.0});
+   BeginFiniteBurn 'Turn thruster on' DefaultFB(SC1);
+   Propagate 'Prop burn duration' DefaultProp(SC1) {SC1.ElapsedSecs = BurnDuration, OrbitColor = [255 128 64]};
+   EndFiniteBurn 'Turn thruster off' DefaultFB(SC1);
+   Propagate 'Prop to apoapsis' DefaultProp(SC1) {SC1.Luna.Apoapsis, OrbitColor = [0 255 0]};
+   Achieve 'Achieve X pos' DefaultDC(SC1.EMBaryRot.X = 388641.8766523507, {Tolerance = 2660});
+   Achieve 'Achieve Y pos' DefaultDC(SC1.EMBaryRot.Y = 0, {Tolerance = 2660});
+   Achieve 'Achieve Z pos' DefaultDC(SC1.EMBaryRot.Z = -66558.85993853999, {Tolerance = 2660});
+EndTarget;  % For targeter DefaultDC
+Propagate DefaultProp(SC1) {SC1.ElapsedDays = 24};
+% EndWhile;
+
+
+
+
+
+
+
+
+
+
