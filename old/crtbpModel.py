@@ -15,14 +15,13 @@ import extractTools
 import spiceypy as spice
 import multiShooting as ms
 
-# import singleShooting as ss
 from scipy.optimize import fsolve
 
 spice.furnsh("fullForce.txt")
 
 # ** USER INPUTS
-showPlots = False
-fileDir = "/home/jmrip/SIOSLab/Astrodynamics_Code"
+showPlots = True
+fileDir = "results"
 fileName = "L1_NorthernN.npz"
 
 # Parameters
@@ -38,43 +37,42 @@ radiiMoon = spice.bodvrd("Moon", "RADII", 3)[1][0]
 rMoon = unitConversion.convertPos_to_canonical(radiiMoon * u.km)
 
 # Initial condition in canonical units in rotating frame R [pos, vel]
-# IC = [1.0110350588, 0, -0.1731500000, 0, -0.0780141199, 0, 1.3632096570/2]                 # L2 Northern
-# IC = [1.0118, 0, -0.1739, 0, -0.0799, 0, 1.3743]                # L2 Southern   Dont' use this one
-# IC = [0.8234, 0, 0.0224, 0, 0.1343, 0, 2.7464/2]                # L1 Northern
-# IC = [0.8234, 0, -0.0224, 0, 0.1343, 0, 2.7464/2]               # L1 Southern
-# IC = [1.0118, 0, 0.1739, 0, -0.0799, 0, 1.3743]                 # L2 Northern Butterfly
-# IC = [0.9624690577, 0, 0, 0, 0.7184165432, 0, 0.2230147974/2]   # DRO
-# IC = [0.583856747, 0.0, 0.0, 0.0, 0.96455414, 0.0, 5.70245716/2]    # DRO
+# IC = [
+#     1.0110350588,
+#     0,
+#     -0.1731500000,
+#     0,
+#     -0.0780141199,
+#     0,
+#     1.3632096570 / 2,
+# ]  # L2 Northern
+# IC = [0.583856747, 0.0, 0.0, 0.0, 0.96455414, 0.0, 5.70245716 / 2]  # DRO
 
-# IC = [0.7824, 0, 0, 0, 0.4401, 0.0500, 3.952/2]     # L1 axial
-# IC = [1.21830, 0, 0, 0, -0.4248, 0.0500, 4.3133/2]  # L2 axial
-# IC = [0.9261, 0, 0.3616, 0, -0.0544, 0, 5.0950/2]   # L1 vertical
-# IC = [1.0842, 0, 0, 0, -0.5417, -0.5417,  6.1305/2]   # L2 vertical
 
-# IC = [((1 - mu_star) - 0.023413), 0, 0, 0, 0.720544, 0, 0.102081]
+# IC = [0.429519110229904, 0, 0, 0, 1.440796689672539, 0, 3.051133070334277]  # DRO
 
-# IC = [1.01103506347211, 0, -0.17315001039682773, 0, -0.07801414771853428, 0, 1.363209636932144/2]  #L2, 5.92773293-day period
-# IC = [0.9624690577, 0, 0, 0, 0.7184165432, 0, 0.2230147974/2]   # DRO, 0.9697497-day period
-# IC = [0.429519110229904, 0, 0, 0, 1.440796689672539, 0, 3.051133070334277] # DRO
-# IC = [0.517332653163958, 0, 0, 0, 1.12965881302616, 0, 8.50664047891897] # P3DRO, fails miserably
-# IC = [1.165130674583613, 0, -0.110699848144854, 0, 0.201519926517907, 0, 1.652428300688599]
-# IC = [1.114959432252717, 0, 0.027057507726036, 0, 0.191674660415012, 0, 3.403442494940593/2]   # matlab
-# IC = [1.11495, 0, 0.02705, 0, 0.19167, 0, 3.40344/2]   # matlab
-IC = [
-    0.856382122325864,
-    0,
-    0.181519309916197,
-    0,
-    0.257898218422393,
-    0,
-    1.22727308466325,
-]  # L1
-# IC = [-0.896529924337523, 0, -0.365413407731828, 0, 1.92585384041011, 0, 1.53197851042839/2]    # also L1
-# IC = [1.06896234204296, 0, 0.159599443574046, 0, -0.00769167653854165, 0, 1.66142030228280] # butterfly
-# IC = [0.95571113, 0.        , 0.16892834, 0.        , 0.29101955, 0.        , 6.8828406/2]
-# IC = [0.766044481790803, 0, 0, 0, 0.488736680662207, 0, 2.20546980585774]   # L1 lyapunov
-# IC = [0.265819894849149, 0, 0, 0, 2.27750677757506, 0, 6.25588866460133]    # 2:1 resonant, fails miserably
-# IC = [0.139106790847531, 0, 0, 0, 3.35999055380076, 0, 9.40977341640670]    # 2:3 resonant, fails miserably
+# IC = [
+#     0.856382122325864,
+#     0,
+#     0.181519309916197,
+#     0,
+#     0.257898218422393,
+#     0,
+#     1.22727308466325,
+# ]  # L1
+
+# IC = [
+#     1.06896234204296,
+#     0,
+#     0.159599443574046,
+#     0,
+#     -0.00769167653854165,
+#     0,
+#     1.66142030228280,
+# ]  # butterfly
+
+# IC = [0.95571113, 0.0, 0.16892834, 0.0, 0.29101955, 0.0, 6.8828406 / 2]
+
 
 # Generate new ICs using the free variable and constraint method
 arrayI = np.reshape(np.eye(6), (1, 36))[0]
@@ -142,7 +140,8 @@ while X[-1] * 2 < Tp_lim and Nsols < 10:
     else:
         ax1.plot(posCRTBP_R[:, 0], posCRTBP_R[:, 1], posCRTBP_R[:, 2])
         if showPlots:
-            plt.show()
+            plt.show(block=False)
+            plt.pause(0.1)
 
         sol0 = np.append(statesCRTBP_R[0, :], timesCRTBP_R[-1])
         goodSols = np.append(goodSols, sol0)
@@ -176,7 +175,11 @@ ax1.set_xlabel("X [DU]")
 ax1.set_ylabel("Y [DU]")
 ax1.set_zlabel("Z [DU]")
 if showPlots:
-    plt.show()
+    plt.show(block=False)
+    plt.pause(0.1)
+
+if goodSols.size == 0:
+    raise RuntimeError("All generated solutions intersect the secondary body.")
 
 goodSols = np.reshape(goodSols, (Nsols + 1, 7))
 states = goodSols[1:, 0:6]
@@ -191,7 +194,7 @@ ax1.set_zlabel("Z [DU]")
 
 # save initial conditions
 np.savez(
-    fileDir + "/starlift/orbits/" + fileName,
+    fileDir + "/" + fileName,
     states=states,
     periods=periods,
     mu_star=mu_star,
