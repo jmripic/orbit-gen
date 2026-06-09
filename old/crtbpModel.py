@@ -1,92 +1,45 @@
 import numpy as np
 import sys
-from astropy.time import Time
 import astropy.units as u
-from scipy.integrate import solve_ivp
 from matplotlib import pyplot as plt
-from matplotlib import animation
 
-sys.path.insert(1, "tools")
-import unitConversion
-import frameConversion
-import orbitEOMProp
-import plot_tools
-import extractTools
+from tools import unitConversion, orbitEOMProp
 import spiceypy as spice
-import multiShooting as ms
 
 from scipy.optimize import fsolve
+from configs.run_config import ACTIVE_CONFIG
 
-spice.furnsh("fullForce.txt")
+spice.furnsh(str(ACTIVE_CONFIG.spice_kernel))
 
-# ** USER INPUTS
-showPlots = True
-fileDir = "results"
-fileName = "L1_NorthernN.npz"
+showPlots = ACTIVE_CONFIG.show_plots
+outputPath = ACTIVE_CONFIG.output_path
+cfg = ACTIVE_CONFIG.continuation
+sys = ACTIVE_CONFIG.system
 
 # Parameters
-gmEarth = spice.bodvrd("Earth", "GM", 1)[1][0]
-gmMoon = spice.bodvrd("Moon", "GM", 1)[1][0]
-mu_star = gmMoon / (gmEarth + gmMoon)
-# mu_star = 0.01215059
-# mu_star = 1.2150568E-2
+gm_primary = spice.bodvrd(sys.primary, "GM", 1)[1][0]
+gm_secondary = spice.bodvrd(sys.secondary, "GM", 1)[1][0]
+mu_star = gm_secondary / (gm_primary + gm_secondary)
 m1 = 1 - mu_star
 m2 = mu_star
 
-radiiMoon = spice.bodvrd("Moon", "RADII", 3)[1][0]
-rMoon = unitConversion.convertPos_to_canonical(radiiMoon * u.km)
+radii_secondary = spice.bodvrd(sys.secondary, "RADII", 3)[1][0]
+r_secondary = unitConversion.convertPos_to_canonical(radii_secondary * u.km)
 
-# Initial condition in canonical units in rotating frame R [pos, vel]
-# IC = [
-#     1.0110350588,
-#     0,
-#     -0.1731500000,
-#     0,
-#     -0.0780141199,
-#     0,
-#     1.3632096570 / 2,
-# ]  # L2 Northern
-# IC = [0.583856747, 0.0, 0.0, 0.0, 0.96455414, 0.0, 5.70245716 / 2]  # DRO
-
-
-# IC = [0.429519110229904, 0, 0, 0, 1.440796689672539, 0, 3.051133070334277]  # DRO
-
-# IC = [
-#     0.856382122325864,
-#     0,
-#     0.181519309916197,
-#     0,
-#     0.257898218422393,
-#     0,
-#     1.22727308466325,
-# ]  # L1
-
-# IC = [
-#     1.06896234204296,
-#     0,
-#     0.159599443574046,
-#     0,
-#     -0.00769167653854165,
-#     0,
-#     1.66142030228280,
-# ]  # butterfly
-
-# IC = [0.95571113, 0.0, 0.16892834, 0.0, 0.29101955, 0.0, 6.8828406 / 2]
-
+IC = ACTIVE_CONFIG.ic.full_ic
 
 # Generate new ICs using the free variable and constraint method
 arrayI = np.reshape(np.eye(6), (1, 36))[0]
 X = [IC[0], IC[2], IC[4], IC[6]]
-max_iter = 50
+max_iter = cfg.max_iter
 error = 10
-eps = 1e-6
-step = 0.01
-Tp_lim = unitConversion.convertTime_to_canonical(30.0 * u.d)
-# Tp_max = 5.8
+eps = cfg.eps
+step = cfg.step
+Tp_lim = unitConversion.convertTime_to_canonical(cfg.max_period_days * u.d)
 goodSols = np.array([])
 Nsols = -1
 ax1 = plt.figure().add_subplot(projection="3d")
-while X[-1] * 2 < Tp_lim and Nsols < 10:
+while X[-1] * 2 < Tp_lim and Nsols < cfg.max_solutions:
     ctr = 0
     error = 10
     z = np.array([0, 0, 0, -1])
@@ -134,7 +87,7 @@ while X[-1] * 2 < Tp_lim and Nsols < 10:
     print(
         "Perilune: " + str(unitConversion.convertPos_to_dim(min(rmag)).to_value(u.km))
     )
-    if np.any(rmag < rMoon):
+    if np.any(rmag < r_secondary):
         print("Intersects moon. Not a solution")
         Nsols = Nsols - 1
     else:
@@ -194,7 +147,7 @@ ax1.set_zlabel("Z [DU]")
 
 # save initial conditions
 np.savez(
-    fileDir + "/" + fileName,
+    outputPath,
     states=states,
     periods=periods,
     mu_star=mu_star,
