@@ -1,4 +1,3 @@
-
 import numpy as np
 import astropy.units as u
 from astropy.time import Time
@@ -27,7 +26,7 @@ def extractSTK(file_path):
     times = []
 
     # Read the file
-    with open(file_path, 'r') as file:
+    with open(file_path, "r") as file:
         # Skip the header lines
         for line in file:
             if line.startswith("-"):
@@ -50,17 +49,21 @@ def extractSTK(file_path):
             year = columns[5]
             time_part = columns[6] if len(columns) > 6 else "00:00:00.000"
             # Convert to datetime object and reformat
-            date_obj = datetime.datetime.strptime(f"{day} {month} {year} {time_part}", "%d %b %Y %H:%M:%S.%f")
+            date_obj = datetime.datetime.strptime(
+                f"{day} {month} {year} {time_part}", "%d %b %Y %H:%M:%S.%f"
+            )
             times.append(date_obj.strftime("%Y-%m-%d %H:%M:%S.%f"))
 
     # Convert to AU and convert lists to numpy arrays
-    x_positions = (x_positions * u.km).to('AU')
-    y_positions = (y_positions * u.km).to('AU')
-    z_positions = (z_positions * u.km).to('AU')
-    positions = np.array([x_positions, y_positions, z_positions]).T  # 3D array for position vectors
+    x_positions = (x_positions * u.km).to("AU")
+    y_positions = (y_positions * u.km).to("AU")
+    z_positions = (z_positions * u.km).to("AU")
+    positions = np.array(
+        [x_positions, y_positions, z_positions]
+    ).T  # 3D array for position vectors
     # Convert times to MJD using Astropy
-    time_array = Time(times, format='iso', scale='utc').mjd
-    time_array = Time(time_array, format='mjd', scale='utc')
+    time_array = Time(times, format="iso", scale="utc").mjd
+    time_array = Time(time_array, format="mjd", scale="utc")
 
     return positions, time_array
 
@@ -93,7 +96,7 @@ def extract_pos(filepath):
     y = list(map(lambda x: x[1], data)) * u.km
     z = list(map(lambda x: x[2], data)) * u.km
     pos = np.array([x, y, z]).T
-    time = Time(list(map(lambda x: x[3], data)), format='mjd', scale='utc')
+    time = Time(list(map(lambda x: x[3], data)), format="mjd", scale="utc")
 
     return pos, time
 
@@ -127,13 +130,13 @@ def extract_posvel(filepath):
     x = list(map(lambda x: x[0], data)) * u.km
     y = list(map(lambda x: x[1], data)) * u.km
     z = list(map(lambda x: x[2], data)) * u.km
-    vx = list(map(lambda x: x[3], data)) * (u.km/u.s)
-    vy = list(map(lambda x: x[4], data)) * (u.km/u.s)
-    vz = list(map(lambda x: x[5], data)) * (u.km/u.s)
+    vx = list(map(lambda x: x[3], data)) * (u.km / u.s)
+    vy = list(map(lambda x: x[4], data)) * (u.km / u.s)
+    vz = list(map(lambda x: x[5], data)) * (u.km / u.s)
 
     pos = np.array([x, y, z]).T
     vel = np.array([vx, vy, vz]).T
 
-    time = Time(list(map(lambda x: x[6], data)), format='mjd', scale='utc')
+    time = Time(list(map(lambda x: x[6], data)), format="mjd", scale="utc")
 
     return pos, vel, time

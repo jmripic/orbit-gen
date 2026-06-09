@@ -131,13 +131,9 @@ class STMint:
         x, y, z, vx, vy, vz = symbols("x,y,z,vx,vy,vz")
 
         if "Earth" in preset:
-            V = const.GM_earth.to(u.km**3 / u.s**2).value / sqrt(
-                x**2 + y**2 + z**2
-            )
+            V = const.GM_earth.to(u.km**3 / u.s**2).value / sqrt(x**2 + y**2 + z**2)
         elif "Sun" in preset:
-            V = const.GM_sun.to(u.km**3 / u.s**2).value / sqrt(
-                x**2 + y**2 + z**2
-            )
+            V = const.GM_sun.to(u.km**3 / u.s**2).value / sqrt(x**2 + y**2 + z**2)
         else:
             V = preset_mult / sqrt(x**2 + y**2 + z**2)
 
@@ -370,7 +366,7 @@ class STMint:
         events=None,
         vectorized=False,
         args=None,
-        **options
+        **options,
     ):
         """Clone of scipy.solve_ivp
 
@@ -411,7 +407,7 @@ class STMint:
             events,
             vectorized,
             args,
-            **options
+            **options,
         )
 
     def dynVar_int(
@@ -425,7 +421,7 @@ class STMint:
         events=None,
         vectorized=False,
         args=None,
-        **options
+        **options,
     ):
         """Clone of scipy.solve_ivp
 
@@ -492,7 +488,7 @@ class STMint:
             events,
             vectorized,
             args,
-            **options
+            **options,
         )
 
         l = len(self.vars)
@@ -540,7 +536,7 @@ class STMint:
         events=None,
         vectorized=False,
         args=None,
-        **options
+        **options,
     ):
         """Clone of scipy.solve_ivp
 
@@ -618,7 +614,7 @@ class STMint:
             events,
             vectorized,
             args,
-            **options
+            **options,
         )
 
         l = len(self.vars)

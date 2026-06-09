@@ -3,47 +3,46 @@ from matplotlib import pyplot as plt
 import constants as c
 import frameConversion
 import unitConversion
-import astropy.coordinates as coord
 from astropy.coordinates.solar_system import get_body_barycentric_posvel
 import astropy.units as u
 from scipy.interpolate import interp1d
 from matplotlib import animation
 
 ## temporary, for anna
-#import starlift.orbits.tools.unitConversion as unitConversion
-#import starlift.orbits.tools.frameConversion as frameConversion
-#import starlift.orbits.tools.constants as c
+# import starlift.orbits.tools.unitConversion as unitConversion
+# import starlift.orbits.tools.frameConversion as frameConversion
+# import starlift.orbits.tools.constants as c
 
 
 def Orbit3D(solvec, time, args={}):
-    """Plot the orbit in three dimensions. Default origin is the EM barycenter in the EM synodic reference frame. The dimensioned argument is also supplied to properly organize the display of the Earth, Moon, and axis scaling. 
+    """Plot the orbit in three dimensions. Default origin is the EM barycenter in the EM synodic reference frame. The dimensioned argument is also supplied to properly organize the display of the Earth, Moon, and axis scaling.
     args={'Frame': 'Synodic', 'dimensioned':False}"""
 
-    _args = {'Frame': 'Synodic', 'dimensioned':True}
+    _args = {"Frame": "Synodic", "dimensioned": True}
     for key in args.keys():
-        _args[ key ] = args[ key ]
+        _args[key] = args[key]
 
-    x_vals = np.array(solvec[:,0])
-    y_vals = np.array(solvec[:,1])
-    z_vals = np.array(solvec[:,2])
+    x_vals = np.array(solvec[:, 0])
+    y_vals = np.array(solvec[:, 1])
+    z_vals = np.array(solvec[:, 2])
 
-    ax = plt.axes(projection='3d')
-    traj = ax.scatter(x_vals,y_vals,z_vals, c=time, cmap = 'plasma', s=.5)
-    ax.scatter(0,0,0, c='m', marker='*')
-    
-    n = np.linspace(0,2*np.pi,100)
+    ax = plt.axes(projection="3d")
+    traj = ax.scatter(x_vals, y_vals, z_vals, c=time, cmap="plasma", s=0.5)
+    ax.scatter(0, 0, 0, c="m", marker="*")
+
+    n = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
 
-    if _args['dimensioned'] == False:
+    if _args["dimensioned"] == False:
         re = c.earthR / c.lstar
         rm = c.moonR / c.lstar
         eoffset = -c.mustar
-        moffset = 1-c.mustar
+        moffset = 1 - c.mustar
     else:
         re = c.earthR
         rm = c.moonR
-        eoffset = -c.mustar*c.moonSMA
-        moffset = (1-c.mustar)*c.moonSMA
+        eoffset = -c.mustar * c.moonSMA
+        moffset = (1 - c.mustar) * c.moonSMA
 
     xe = re * np.outer(np.cos(n), np.sin(v)) + eoffset
     ye = re * np.outer(np.sin(n), np.sin(v))
@@ -53,29 +52,29 @@ def Orbit3D(solvec, time, args={}):
     ym = rm * np.outer(np.sin(n), np.sin(v))
     zm = rm * np.outer(np.ones(np.size(n)), np.cos(v))
 
-    ax.plot_surface(xe,ye,ze)
-    ax.plot_surface(xm,ym,zm)
-    plt.title('Orbit in the Earth-Moon Rotating Frame')
+    ax.plot_surface(xe, ye, ze)
+    ax.plot_surface(xm, ym, zm)
+    plt.title("Orbit in the Earth-Moon Rotating Frame")
 
-    plt.axis('equal')
+    plt.axis("equal")
     ax.legend()
-    plt.xlabel('X')
-    plt.ylabel('Y')
+    plt.xlabel("X")
+    plt.ylabel("Y")
     plt.colorbar(traj)
     plt.show()
 
 
-def PlotManifold(solvec, time, mu, ax, title,eigval, eigvec):
+def PlotManifold(solvec, time, mu, ax, title, eigval, eigvec):
     # _args = {'Frame': 'Synodic'}
-    x_vals = np.array(solvec[0,:])
-    y_vals = np.array(solvec[1,:])
-    z_vals = np.array(solvec[2,:])
-    
-    # ax = plt.axes(projection='3d')
-    traj = ax.scatter(x_vals,y_vals,z_vals, c=time, cmap = 'plasma',s=.5)
-    ax.scatter(0,0,0, c='m', marker='*')
+    x_vals = np.array(solvec[0, :])
+    y_vals = np.array(solvec[1, :])
+    z_vals = np.array(solvec[2, :])
 
-    n = np.linspace(0,2*np.pi,100)
+    # ax = plt.axes(projection='3d')
+    traj = ax.scatter(x_vals, y_vals, z_vals, c=time, cmap="plasma", s=0.5)
+    ax.scatter(0, 0, 0, c="m", marker="*")
+
+    n = np.linspace(0, 2 * np.pi, 100)
     v = np.linspace(0, np.pi, 100)
 
     re = c.earthD / c.lstar
@@ -85,27 +84,25 @@ def PlotManifold(solvec, time, mu, ax, title,eigval, eigvec):
     ye = re * np.outer(np.sin(n), np.sin(v)) + 0
     ze = re * np.outer(np.ones(np.size(n)), np.cos(v)) + 0
 
-    xm = rm * np.outer(np.cos(n), np.sin(v)) + (1-mu)
+    xm = rm * np.outer(np.cos(n), np.sin(v)) + (1 - mu)
     ym = rm * np.outer(np.sin(n), np.sin(v))
     zm = rm * np.outer(np.ones(np.size(n)), np.cos(v))
 
-    ax.plot_surface(xe,ye,ze)
-    ax.plot_surface(xm,ym,zm)
+    ax.plot_surface(xe, ye, ze)
+    ax.plot_surface(xm, ym, zm)
     plt.suptitle(title)
 
-    ax.set_title(("Eigenvalue: ", eigval ))
-    plt.axis('equal')
+    ax.set_title(("Eigenvalue: ", eigval))
+    plt.axis("equal")
     # ax.text2D(0.05, 0.95, (r'Eigenvalue: ', eigval, r'\nEigvec: ', eigvec), transform=ax.transAxes)
     ax.legend()
-    plt.xlabel('X\n')
-    plt.ylabel('Y\n')
+    plt.xlabel("X\n")
+    plt.ylabel("Y\n")
     # plt.colorbar(traj)
 
 
 def plotConvertBodies(timesFF, posFF, t_mjd, frame, C_G2I):
     # ** Add documentation
-
-
 
     # preallocate space
     r_PEM_r = np.zeros([len(timesFF), 3])
@@ -120,52 +117,60 @@ def plotConvertBodies(timesFF, posFF, t_mjd, frame, C_G2I):
 
         if frame == 0:
             # positions of the Sun, Moon, and EM barycenter relative SS barycenter in H frame
-            r_SunO = get_body_barycentric_posvel('Sun', time)[0].get_xyz().to('AU')
-            r_MoonO = get_body_barycentric_posvel('Moon', time)[0].get_xyz().to('AU')
-            r_EMO = get_body_barycentric_posvel('Earth-Moon-Barycenter', time).get_xyz().to('AU')
-        
+            r_SunO = get_body_barycentric_posvel("Sun", time)[0].get_xyz().to("AU")
+            r_MoonO = get_body_barycentric_posvel("Moon", time)[0].get_xyz().to("AU")
+            r_EMO = (
+                get_body_barycentric_posvel("Earth-Moon-Barycenter", time)
+                .get_xyz()
+                .to("AU")
+            )
+
             # convert from H frame to GCRS frame
-            r_PG = frameConversion.icrs2gmec(posFF[ii]*u.AU, time)
+            r_PG = frameConversion.icrs2gmec(posFF[ii] * u.AU, time)
             r_EMG = frameConversion.icrs2gmec(r_EMO, time)
             r_SunG = frameConversion.icrs2gmec(r_SunO, time)
             r_MoonG = frameConversion.icrs2gmec(r_MoonO, time)
-            
+
             # change the origin to the EM barycenter, G frame
             r_PEM = r_PG - r_EMG
             r_SunEM = r_SunG - r_EMG
             r_EarthEM = -r_EMG
             r_MoonEM = r_MoonG - r_EMG
-            
+
             r_PEM_r[ii, :] = r_PEM
             r_SunEM_r[ii, :] = r_SunEM
             r_EarthEM_r[ii, :] = r_EarthEM
             r_MoonEM_r[ii, :] = r_MoonEM
-            
+
         elif frame >= 1:
             # positions of the Sun, Moon, and EM barycenter relative SS barycenter in H frame
-            r_MoonO = get_body_barycentric_posvel('Moon', time)[0].get_xyz().to('AU')
-            r_EMO = get_body_barycentric_posvel('Earth-Moon-Barycenter', time)[0].get_xyz().to('AU')
-            
+            r_MoonO = get_body_barycentric_posvel("Moon", time)[0].get_xyz().to("AU")
+            r_EMO = (
+                get_body_barycentric_posvel("Earth-Moon-Barycenter", time)[0]
+                .get_xyz()
+                .to("AU")
+            )
+
             # convert from H frame to GCRS frame
-            r_PG = frameConversion.icrs2gmec(posFF[ii]*u.AU, time)
+            r_PG = frameConversion.icrs2gmec(posFF[ii] * u.AU, time)
             r_EMG = frameConversion.icrs2gmec(r_EMO, time)
             r_MoonG = frameConversion.icrs2gmec(r_MoonO, time)
-            
+
             # change the origin to the EM barycenter, G frame
             r_PEM = r_PG - r_EMG
             r_EarthEM = -r_EMG
             r_MoonEM = r_MoonG - r_EMG
-            
+
             # convert from G frame to I frame
-            r_PEM = C_G2I@r_PEM.to('AU')
-            r_EarthEM = C_G2I@r_EarthEM.to('AU')
-            r_MoonEM = C_G2I@r_MoonEM.to('AU')
-            
+            r_PEM = C_G2I @ r_PEM.to("AU")
+            r_EarthEM = C_G2I @ r_EarthEM.to("AU")
+            r_MoonEM = C_G2I @ r_MoonEM.to("AU")
+
             if frame == 2:
                 C_I2R = frameConversion.inert2rot(time, t_mjd)
-                r_PEM = C_I2R@r_PEM.to('AU')
-                r_EarthEM = C_I2R@r_EarthEM.to('AU')
-                r_MoonEM = C_I2R@r_MoonEM.to('AU')
+                r_PEM = C_I2R @ r_PEM.to("AU")
+                r_EarthEM = C_I2R @ r_EarthEM.to("AU")
+                r_MoonEM = C_I2R @ r_MoonEM.to("AU")
 
             r_PEM_r[ii, :] = r_PEM.value
             r_EarthEM_r[ii, :] = r_EarthEM.value
@@ -173,41 +178,45 @@ def plotConvertBodies(timesFF, posFF, t_mjd, frame, C_G2I):
 
     return r_PEM_r, r_SunEM_r, r_EarthEM_r, r_MoonEM_r
 
-        
+
 def plotBodiesFF(timesFF, posFF, t_mjd, frame):
     # ** Add documentation
 
-    r_PEM, r_SunEM, r_EarthEM, r_MoonEM = plotConvertBodies(timesFF, posFF, t_mjd, frame)
-    
-    ax = plt.figure().add_subplot(projection='3d')
-    ax.plot(r_EarthEM[:, 0], r_EarthEM[:, 1], r_EarthEM[:, 2], 'g', label='Earth')
-    ax.plot(r_MoonEM[:, 0], r_MoonEM[:, 1], r_MoonEM[:, 2], 'r', label='Moon')
-    ax.plot(r_PEM[:, 0], r_PEM[:, 1], r_PEM[:, 2], 'b', label='Full Force')
+    r_PEM, r_SunEM, r_EarthEM, r_MoonEM = plotConvertBodies(
+        timesFF, posFF, t_mjd, frame
+    )
+
+    ax = plt.figure().add_subplot(projection="3d")
+    ax.plot(r_EarthEM[:, 0], r_EarthEM[:, 1], r_EarthEM[:, 2], "g", label="Earth")
+    ax.plot(r_MoonEM[:, 0], r_MoonEM[:, 1], r_MoonEM[:, 2], "r", label="Moon")
+    ax.plot(r_PEM[:, 0], r_PEM[:, 1], r_PEM[:, 2], "b", label="Full Force")
     if frame == 0:
-        ax.plot(r_SunEM[:, 0], r_SunEM[:, 1], r_SunEM[:, 2], 'y', label='Sun')
-    ax.set_xlabel('X [AU]')
-    ax.set_ylabel('Y [AU]')
-    ax.set_zlabel('Z [AU]')
+        ax.plot(r_SunEM[:, 0], r_SunEM[:, 1], r_SunEM[:, 2], "y", label="Sun")
+    ax.set_xlabel("X [AU]")
+    ax.set_ylabel("Y [AU]")
+    ax.set_zlabel("Z [AU]")
     plt.legend()
-    
+
     # ** Add lines to resize figure and automatically save png and svg
     return
 
 
 def plotCompare_rot(timesFF, posFF, t_mjd, frame, timesCRTBP, posCRTBP, C_G2I):
     # ** Add documentation
-    
-    r_PEM, _, r_EarthEM, r_MoonEM = plotConvertBodies(timesFF, posFF, t_mjd, frame, C_G2I)
 
-    posCRTBP = (unitConversion.convertPos_to_dim(posCRTBP).to('AU')).value
-    ax = plt.figure().add_subplot(projection='3d')
-    ax.plot(posCRTBP[:, 0], posCRTBP[:, 1], posCRTBP[:, 2], 'k', label='CRTBP')
-    ax.plot(r_PEM[:, 0], r_PEM[:, 1],r_PEM[:, 2], 'b', label='Full Force')
-    ax.plot(r_EarthEM[:, 0], r_EarthEM[:, 1], r_EarthEM[:, 2], 'g', label='Earth')
-    ax.plot(r_MoonEM[:, 0], r_MoonEM[:, 1], r_MoonEM[:, 2], 'r', label='Moon')
-    ax.set_xlabel('X [AU]')
-    ax.set_ylabel('Y [AU]')
-    ax.set_zlabel('Z [AU]')
+    r_PEM, _, r_EarthEM, r_MoonEM = plotConvertBodies(
+        timesFF, posFF, t_mjd, frame, C_G2I
+    )
+
+    posCRTBP = (unitConversion.convertPos_to_dim(posCRTBP).to("AU")).value
+    ax = plt.figure().add_subplot(projection="3d")
+    ax.plot(posCRTBP[:, 0], posCRTBP[:, 1], posCRTBP[:, 2], "k", label="CRTBP")
+    ax.plot(r_PEM[:, 0], r_PEM[:, 1], r_PEM[:, 2], "b", label="Full Force")
+    ax.plot(r_EarthEM[:, 0], r_EarthEM[:, 1], r_EarthEM[:, 2], "g", label="Earth")
+    ax.plot(r_MoonEM[:, 0], r_MoonEM[:, 1], r_MoonEM[:, 2], "r", label="Moon")
+    ax.set_xlabel("X [AU]")
+    ax.set_ylabel("Y [AU]")
+    ax.set_zlabel("Z [AU]")
     plt.legend()
     breakpoint()
     # ** Add lines to resize figure and automatically save png and svg
@@ -217,41 +226,41 @@ def plotCompare_rot(timesFF, posFF, t_mjd, frame, timesCRTBP, posCRTBP, C_G2I):
 def plotCompare_inert(timesCRTBP, posCRTBP, t_mjd, timesFF, posFF, mu_star):
     # Fix this. Determine which inertial frame this should be
     # ** Add documentation
-    
+
     times = timesCRTBP + t_mjd
-    pos_dim = unitConversion.convertPos_to_dim(posCRTBP).to('AU')
-    
+    pos_dim = unitConversion.convertPos_to_dim(posCRTBP).to("AU")
+
     C_I2G = frameConversion.inert2geo(t_mjd)
-    
+
     pos_H = np.zeros([len(times), 3])
     for ii in np.arange(len(timesCRTBP)):
         currentTime = times[ii]
         C_I2R = frameConversion.inert2rot(currentTime, t_mjd)
         pos_I = C_I2R @ pos_dim[ii]
-        
+
         pos_G = C_I2G @ pos_I
-        
-        state_EMB = get_body_barycentric_posvel('Earth-Moon-Barycenter', t_mjd)
-        posEMB = state_EMB[0].get_xyz().to('AU')
-        velEMB = state_EMB[1].get_xyz().to('AU/day')
-        posE = get_body_barycentric_posvel('Earth', t_mjd)[0].get_xyz().to('AU')
+
+        state_EMB = get_body_barycentric_posvel("Earth-Moon-Barycenter", t_mjd)
+        posEMB = state_EMB[0].get_xyz().to("AU")
+        velEMB = state_EMB[1].get_xyz().to("AU/day")
+        posE = get_body_barycentric_posvel("Earth", t_mjd)[0].get_xyz().to("AU")
         posE_EMB = posE - posEMB
 
         pos_GCRS = pos_G - posE_EMB
-        
-        pos_H[ii, :] = (frameConversion.gmec2icrs(pos_GCRS, t_mjd)).to('AU')
 
-    r_EarthO = get_body_barycentric_posvel('Earth', times)[0].get_xyz().to('AU')
-    r_MoonO = get_body_barycentric_posvel('Moon', times)[0].get_xyz().to('AU')
-    
-    ax = plt.figure().add_subplot(projection='3d')
-    ax.plot(pos_H[:, 0], pos_H[:, 1], pos_H[:, 2], 'k', label='CRTBP')
-    ax.plot(posFF[:, 0], posFF[:, 1],posFF[:, 2], 'b', label='Full Force')
-#    ax.plot(r_EarthO[:, 0], r_EarthO[:, 1], r_EarthO[:, 2], 'g', label='Earth')
-#    ax.plot(r_MoonO[:, 0], r_MoonO[:, 1], r_MoonO[:, 2], 'r', label='Moon')
-    ax.set_xlabel('X [AU]')
-    ax.set_ylabel('Y [AU]')
-    ax.set_zlabel('Z [AU]')
+        pos_H[ii, :] = (frameConversion.gmec2icrs(pos_GCRS, t_mjd)).to("AU")
+
+    r_EarthO = get_body_barycentric_posvel("Earth", times)[0].get_xyz().to("AU")
+    r_MoonO = get_body_barycentric_posvel("Moon", times)[0].get_xyz().to("AU")
+
+    ax = plt.figure().add_subplot(projection="3d")
+    ax.plot(pos_H[:, 0], pos_H[:, 1], pos_H[:, 2], "k", label="CRTBP")
+    ax.plot(posFF[:, 0], posFF[:, 1], posFF[:, 2], "b", label="Full Force")
+    #    ax.plot(r_EarthO[:, 0], r_EarthO[:, 1], r_EarthO[:, 2], 'g', label='Earth')
+    #    ax.plot(r_MoonO[:, 0], r_MoonO[:, 1], r_MoonO[:, 2], 'r', label='Moon')
+    ax.set_xlabel("X [AU]")
+    ax.set_ylabel("Y [AU]")
+    ax.set_zlabel("Z [AU]")
     plt.legend()
     breakpoint()
     # ** Add lines to resize figure and automatically save png and svg
@@ -333,7 +342,7 @@ def calculate_plot_limits(*positions):
     return limit
 
 
-def plot_bodies(*positions, body_names=None, title='Celestial Bodies Plot'):
+def plot_bodies(*positions, body_names=None, title="Celestial Bodies Plot"):
     """
     Plots an indeterminate number of bodies in a static 3D plot. Returns fig and ax to be used to save the plot, as
     in the following example:
@@ -356,11 +365,11 @@ def plot_bodies(*positions, body_names=None, title='Celestial Bodies Plot'):
 
     # Set up the figure
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
+    ax = fig.add_subplot(projection="3d")
 
     # If no body names are given
     if body_names is None:
-        body_names = [f'Body {i + 1}' for i in range(len(positions))]
+        body_names = [f"Body {i + 1}" for i in range(len(positions))]
 
     # Plot each body's data
     for i, pos in enumerate(positions):
@@ -371,9 +380,9 @@ def plot_bodies(*positions, body_names=None, title='Celestial Bodies Plot'):
     ax.set_xlim([-limit, limit])
     ax.set_ylim([-limit, limit])
     ax.set_zlim([-limit, limit])
-    ax.set_xlabel('X [AU]')
-    ax.set_ylabel('Y [AU]')
-    ax.set_zlabel('Z [AU]')
+    ax.set_xlabel("X [AU]")
+    ax.set_ylabel("Y [AU]")
+    ax.set_zlabel("Z [AU]")
     plt.legend()
     plt.title(title)
 
@@ -383,7 +392,14 @@ def plot_bodies(*positions, body_names=None, title='Celestial Bodies Plot'):
     return fig, ax
 
 
-def create_animation(times, days, desired_duration, positions, body_names=None, title='Celestial Bodies Animation'):
+def create_animation(
+    times,
+    days,
+    desired_duration,
+    positions,
+    body_names=None,
+    title="Celestial Bodies Animation",
+):
     """
     This function generates an animation of multiple celestial bodies over a given animation duration.
 
@@ -430,9 +446,9 @@ def create_animation(times, days, desired_duration, positions, body_names=None, 
     interpolated_positions = []
     for pos in positions:
         interpolated_pos = [
-            interp1d(times, pos[:, 0], kind='linear')(new_times),
-            interp1d(times, pos[:, 1], kind='linear')(new_times),
-            interp1d(times, pos[:, 2], kind='linear')(new_times)
+            interp1d(times, pos[:, 0], kind="linear")(new_times),
+            interp1d(times, pos[:, 1], kind="linear")(new_times),
+            interp1d(times, pos[:, 2], kind="linear")(new_times),
         ]
         interpolated_positions.append(np.array(interpolated_pos))
 
@@ -443,16 +459,21 @@ def create_animation(times, days, desired_duration, positions, body_names=None, 
 
     # Set up the figure
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d')
+    ax = fig.add_subplot(projection="3d")
 
     # If no body names are given
     if body_names is None:
-        body_names = [f'Body {i + 1}' for i in range(len(positions))]
+        body_names = [f"Body {i + 1}" for i in range(len(positions))]
 
     # Initialize lines for each body
     lines = []
     for i, interp_pos in enumerate(interpolated_positions):
-        line, = ax.plot(interp_pos[0, 0:1], interp_pos[1, 0:1], interp_pos[2, 0:1], label=body_names[i])
+        (line,) = ax.plot(
+            interp_pos[0, 0:1],
+            interp_pos[1, 0:1],
+            interp_pos[2, 0:1],
+            label=body_names[i],
+        )
         lines.append(line)
 
     # Set axis limits
@@ -460,9 +481,9 @@ def create_animation(times, days, desired_duration, positions, body_names=None, 
     ax.set_xlim([-limit, limit])
     ax.set_ylim([-limit, limit])
     ax.set_zlim([-limit, limit])
-    ax.set_xlabel('X [AU]')
-    ax.set_ylabel('Y [AU]')
-    ax.set_zlabel('Z [AU]')
+    ax.set_xlabel("X [AU]")
+    ax.set_ylabel("Y [AU]")
+    ax.set_zlabel("Z [AU]")
     plt.legend()
 
     # Define the animate function
@@ -477,7 +498,9 @@ def create_animation(times, days, desired_duration, positions, body_names=None, 
             line.set_3d_properties(interp_pos[2, :idx])
 
     # Create the animation
-    ani = animation.FuncAnimation(fig, animate, frames=total_frames // skip_factor, interval=1, repeat=True)
+    ani = animation.FuncAnimation(
+        fig, animate, frames=total_frames // skip_factor, interval=1, repeat=True
+    )
     plt.title(title)
     plt.show()
 

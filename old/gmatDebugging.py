@@ -5,7 +5,8 @@ from astropy.time import Time
 import matplotlib.pyplot as plt
 from astropy.coordinates.solar_system import get_body_barycentric_posvel
 import datetime
-sys.path.insert(1, 'tools')
+
+sys.path.insert(1, "tools")
 import extractTools
 import frameConversion
 import plot_tools
@@ -19,9 +20,9 @@ pos_rot, times = extractTools.extractSTK(file_path)
 breakpoint()
 
 # Convert to I frame from R frame
-t_equinox = Time(51544.5, format='mjd', scale='utc')
-t_veq = t_equinox + 79.3125*u.d  # + 1*u.yr/4
-t_start = Time(57727, format='mjd', scale='utc')
+t_equinox = Time(51544.5, format="mjd", scale="utc")
+t_veq = t_equinox + 79.3125 * u.d  # + 1*u.yr/4
+t_start = Time(57727, format="mjd", scale="utc")
 
 pos_convert = np.zeros([len(times), 3])
 for ii in np.arange(len(times)):
@@ -29,12 +30,13 @@ for ii in np.arange(len(times)):
     C_R2I = C_I2R.T
     pos_convert[ii, :] = C_R2I @ pos_rot[ii, :]
 
-title = 'STK Spacecraft'
-body_names = ['Rot to inert convert [AU]']
+title = "STK Spacecraft"
+body_names = ["Rot to inert convert [AU]"]
 fig_I, ax_I = plot_tools.plot_bodies(pos_convert, body_names=body_names, title=title)
 
 
 # ~~~~~FUNCTIONS FOR EQUAL TIME INTERVALS~~~~~
+
 
 # Resample positions to equal time intervals
 def resample_positions(positions, times, new_times):
@@ -69,7 +71,10 @@ def compare_dcms(positions, times, interval):
     end_time = times[-1]
     delta_time = interval * u.s  # Interval in seconds
 
-    new_times = Time(np.arange(start_time.mjd, end_time.mjd, delta_time.to(u.day).value), format='mjd')
+    new_times = Time(
+        np.arange(start_time.mjd, end_time.mjd, delta_time.to(u.day).value),
+        format="mjd",
+    )
 
     resampled_positions = resample_positions(positions, times, new_times)
 
@@ -82,7 +87,7 @@ def compare_dcms(positions, times, interval):
     # Compare DCMs (using Frobenius norm)
     differences = []
     for i in range(1, len(dcms)):
-        diff = np.linalg.norm(dcms[i] - dcms[i - 1], ord='fro')  # Frobenius norm
+        diff = np.linalg.norm(dcms[i] - dcms[i - 1], ord="fro")  # Frobenius norm
         differences.append(diff)
 
     return differences, new_times[2:]

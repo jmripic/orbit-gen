@@ -1,6 +1,6 @@
 \begindata
 
-   PATH_VALUES=('/home/jmrip/SIOSLab/Astrodynamics_Code/starlift/orbits/kernels')
+   PATH_VALUES=('kernels/')
 
    PATH_SYMBOLS=('GEN')
 
