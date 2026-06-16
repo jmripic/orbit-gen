@@ -18,5 +18,5 @@ ACTIVE_CONFIG = RunConfig(
     ),
     output_dir=PROJECT_ROOT / "results",
     show_plots=True,
-    spice_kernel=PROJECT_ROOT / "fullForce.txt",
+    spice_kernel=PROJECT_ROOT / "kernels" / "fullForce.txt",
 )

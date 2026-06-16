@@ -1,6 +1,6 @@
 \begindata
 
-   PATH_VALUES=('kernels/')
+   PATH_VALUES=('../src/orbit_gen/kernels')
 
    PATH_SYMBOLS=('GEN')
 

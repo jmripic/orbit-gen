@@ -4,9 +4,7 @@ import astropy.coordinates as coord
 from astropy.coordinates import GCRS, ICRS, GeocentricMeanEcliptic
 from astropy.coordinates.solar_system import get_body_barycentric_posvel
 import sys
-
-sys.path.insert(1, "tools")
-import unitConversion
+from . import unitConversion
 
 # From JPL Horizons
 # TU = 27.321582 d

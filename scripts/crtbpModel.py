@@ -3,11 +3,11 @@ import sys
 import astropy.units as u
 from matplotlib import pyplot as plt
 
-from tools import unitConversion, orbitEOMProp
+from orbit_gen.tools import unitConversion, orbitEOMProp
 import spiceypy as spice
 
 from scipy.optimize import fsolve
-from configs.run_config import ACTIVE_CONFIG
+from orbit_gen.configs.run_config import ACTIVE_CONFIG
 
 spice.furnsh(str(ACTIVE_CONFIG.spice_kernel))
 

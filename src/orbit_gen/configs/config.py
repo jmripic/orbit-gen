@@ -60,9 +60,9 @@ class RunConfig:
     system: SystemConfig
     ic: OrbitIC
     continuation: ContinuationConfig = field(default_factory=ContinuationConfig)
-    output_dir: Path = PROJECT_ROOT / "results"
+    output_dir: Path = PROJECT_ROOT.parent.parent / "results"
     show_plots: bool = True
-    spice_kernel: Path = PROJECT_ROOT / "fullForce.txt"
+    spice_kernel: Path = PROJECT_ROOT / "kernels" / "fullForce.txt"
 
     @property
     def output_filename(self) -> str:

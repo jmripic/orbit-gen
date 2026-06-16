@@ -3,7 +3,7 @@ from scipy.integrate import solve_ivp
 from astropy.coordinates.solar_system import get_body_barycentric_posvel
 import astropy.constants as const
 import astropy.units as u
-from tools import frameConversion
+from . import frameConversion
 import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 
