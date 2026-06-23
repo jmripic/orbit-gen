@@ -29,8 +29,7 @@ class Family:
         r_secondary (float):
             Radius of the secondary body in canonical distance units (DU).
         orbits (list[Orbit]):
-            Collection of valid periodic orbit solutions obtained from the
-            continuation procedure.
+            Collection of valid periodic orbit solutions obtained.
     """
 
     def __init__(self, cfg: RunConfig):
