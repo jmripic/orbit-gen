@@ -1,5 +1,4 @@
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
 
 @dataclass
@@ -33,10 +32,10 @@ class OrbitIC:
 
     @property
     def as_list(self) -> list:
-        """Return free variables as [x0, z0, vy0, T/2] for the corrector."""
+        """Return free variables as [x0, z0, vy0, T/2]."""
         return [self.x0, self.z0, self.vy0, self.half_period]
 
     @property
     def full_ic(self) -> list:
-        """Return the full 7-element IC [x0,0,z0,0,vy0,0,T/2] for reference."""
+        """Return the full 7-element IC [x0, 0, z0, 0, vy0, 0, T/2]."""
         return [self.x0, 0.0, self.z0, 0.0, self.vy0, 0.0, self.half_period]
