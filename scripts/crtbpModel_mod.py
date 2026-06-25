@@ -2,7 +2,7 @@ import argparse
 import yaml
 from pathlib import Path
 
-from orbit_gen.configs.run_config import RunConfig, ContinuationConfig
+from orbit_gen.configs.config import RunConfig, ContinuationConfig
 from orbit_gen.configs.system_config import EM_SYSTEM, SE_SYSTEM
 from orbit_gen.configs.presets import PRESETS
 from orbit_gen.family import Family
