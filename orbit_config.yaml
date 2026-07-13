@@ -1,12 +1,12 @@
 # CR3BP Orbit Continuation Configuration
 # ---------------------------------------
 # system: "EM" for Earth-Moon, "SE" for Sun-Earth
-# preset: name from presets.py
+# preset: Name from presets.py
 
 system: EM
 preset: EM_L1
 
-# Continuation parameters
+# Continuation Parameters
 max_iter: 50
 eps: 1.0e-6
 step: 0.01
