@@ -1,10 +1,16 @@
 from dataclasses import dataclass, field
-from typing import Optional
 from .orbit_ic import OrbitIC
-from .system_config import SystemConfig
+from .system_config import SystemConfig, EM_SYSTEM, SE_SYSTEM
+from .presets import PRESETS
 from pathlib import Path
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+_SYSTEMS = {
+    "EM": EM_SYSTEM,
+    "SE": SE_SYSTEM,
+}
 
 
 @dataclass
@@ -71,3 +77,29 @@ class RunConfig:
     @property
     def output_path(self) -> Path:
         return self.output_dir / self.output_filename
+
+    @classmethod
+    def from_yaml(cls, yaml_path: Path) -> "RunConfig":
+        with open(yaml_path) as yp:
+            data = yaml.safe_load(yp)
+
+        system = _SYSTEMS[data["system"]]
+        ic = PRESETS[data["preset"]]
+
+        continuation = ContinuationConfig(
+            max_iter=data.get("max_iter", 50),
+            eps=data.get("eps", 1e-6),
+            step=data.get("step", 0.01),
+            max_solutions=data.get("max_solutions", 10),
+            max_period_days=data.get("max_period_days", 30.0),
+        )
+
+        return cls(
+            system=system,
+            ic=ic,
+            continuation=continuation,
+            output_dir=PROJECT_ROOT.parent.parent
+            / Path(data.get("output_dir", "results")),
+            show_plots=data.get("show_plots", True),
+            spice_kernel=Path(data.get("spice_kernel", "../kernels/fullForce.txt")),
+        )
