@@ -3,6 +3,9 @@
 # system: "EM" for Earth-Moon, "SE" for Sun-Earth
 # preset: Name from presets.py
 
+# NOTE: By default, the package looks to "orbit_config.yaml" for the
+# desired configuration. Please create the file using this template.
+
 system: EM
 preset: EM_L1
 
