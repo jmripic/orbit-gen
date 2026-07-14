@@ -16,4 +16,3 @@ max_period_days: 30.0
 # Output
 output_dir: results
 show_plots: true
-spice_kernel: ../src/orbit_gen/kernels/fullForce.txt
