@@ -2,7 +2,7 @@
 __pycache__/
 *.pyc
 
-#Static Files
+# Static Files
 *.pdf
 *.png
 *.jpeg
@@ -15,10 +15,13 @@ __pycache__/
 *.mat
 *.npz
 
-#GraceFiles
+# Grace Files
 *sandbox*.py
 */GNSSOrbits/*
 */graveyardOrbits/*
 */forcedOrbits/*
 
 /tools/
+
+# User Input
+orbit_config.yaml
