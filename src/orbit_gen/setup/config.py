@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from .orbit_ic import OrbitIC
 from .system_config import SystemConfig, EM_SYSTEM, SE_SYSTEM
 from .presets import PRESETS
-from ..kernels import ensure_kernels
+from .kernels import ensure_kernels
 from pathlib import Path
 import yaml
 

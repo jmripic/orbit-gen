@@ -1,4 +1,4 @@
-from orbit_gen.configs.config import RunConfig
+from orbit_gen.setup.config import RunConfig
 from orbit_gen.family import Family
 from pathlib import Path
 

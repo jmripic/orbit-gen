@@ -6,7 +6,7 @@ import astropy.units as u
 
 from orbit_gen.utils import eom, units
 from orbit_gen.orbit import Orbit
-from orbit_gen.configs.config import RunConfig
+from orbit_gen.setup.config import RunConfig
 
 
 class Family:
