@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from .orbit_ic import OrbitIC
 from .system_config import SystemConfig, EM_SYSTEM, SE_SYSTEM
 from .presets import PRESETS
+from ..kernels import ensure_kernels
 from pathlib import Path
 import yaml
 
@@ -68,7 +69,9 @@ class RunConfig:
     continuation: ContinuationConfig = field(default_factory=ContinuationConfig)
     output_dir: Path = PROJECT_ROOT.parent.parent / "results"
     show_plots: bool = True
-    spice_kernel: Path = PROJECT_ROOT / "kernels" / "fullForce.txt"
+    kernel_paths: dict[str, Path] = field(
+        init=False, default_factory=ensure_kernels, repr=False
+    )
 
     @property
     def output_filename(self) -> str:
@@ -101,5 +104,4 @@ class RunConfig:
             output_dir=PROJECT_ROOT.parent.parent
             / Path(data.get("output_dir", "results")),
             show_plots=data.get("show_plots", True),
-            spice_kernel=Path(data.get("spice_kernel", "../kernels/fullForce.txt")),
         )

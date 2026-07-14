@@ -41,7 +41,8 @@ class Family:
 
     def _setup_constants(self):
         """Load SPICE kernel and compute CR3BP constants from system config."""
-        spice.furnsh(str(self.cfg.spice_kernel))
+        for path in self.cfg.kernel_paths.values():
+            spice.furnsh(str(path))
 
         sys = self.cfg.system
         gm_primary = spice.bodvrd(sys.primary, "GM", 1)[1][0]
