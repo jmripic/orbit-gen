@@ -1,4 +1,17 @@
 from dataclasses import dataclass
+import astropy.units as u
+
+
+@dataclass(frozen=True)
+class CanonicalUnits:
+    """Characteristic length/time scales for a specific CR3BP system."""
+
+    dist_km: float  # canonical distance [km]
+    time_days: float | None = None  # canonical time / (2*pi) [days]
+
+    @property
+    def du_m(self) -> float:
+        return (self.dist_km * u.km).to("m").value
 
 
 @dataclass
@@ -23,16 +36,19 @@ class SystemConfig:
     name: str
     primary: str
     secondary: str
+    canonical_units: CanonicalUnits
 
 
 EM_SYSTEM = SystemConfig(
     name="EM",
     primary="Earth",
     secondary="Moon",
+    canonical_units=CanonicalUnits(dist_km=3.844e5),
 )
 
 SE_SYSTEM = SystemConfig(
     name="SE",
     primary="Sun",
     secondary="Earth",
+    canonical_units=CanonicalUnits(dist_km=u.au.to("km")),
 )

@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 from orbit_gen.utils import eom, units
+from orbit_gen.setup.system_config import CanonicalUnits
 import astropy.units as u
 
 
@@ -34,12 +35,21 @@ class Orbit:
             `propagate()` is called.
     """
 
-    def __init__(self, x0: float, z0: float, vy0: float, period: float, mu_star: float):
+    def __init__(
+        self,
+        x0: float,
+        z0: float,
+        vy0: float,
+        period: float,
+        mu_star: float,
+        canonical_units: CanonicalUnits,
+    ):
         self.x0 = x0
         self.z0 = z0
         self.vy0 = vy0
         self.period = period
         self.mu_star = mu_star
+        self.canonical_units = canonical_units
 
         self.states = None
         self.times = None
@@ -47,7 +57,9 @@ class Orbit:
     @property
     def period_days(self) -> float:
         """Full orbital period in days."""
-        return units.time_to_dimensional(self.period).to_value(u.day)
+        return units.time_to_dimensional(self.period, self.canonical_units).to_value(
+            u.day
+        )
 
     @property
     def _free_var(self) -> list:

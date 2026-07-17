@@ -7,6 +7,7 @@ import astropy.units as u
 from orbit_gen.utils import eom, units
 from orbit_gen.orbit import Orbit
 from orbit_gen.setup.config import RunConfig
+from orbit_gen.setup.system_config import CanonicalUnits
 
 
 class Family:
@@ -52,13 +53,21 @@ class Family:
         self.m1 = 1 - self.mu_star
         self.m2 = self.mu_star
 
+        dist_km = sys.canonical_units.dist_km
+        time_seconds = np.sqrt(dist_km**3 / (gm_primary + gm_secondary))
+        sys.canonical_units = CanonicalUnits(
+            dist_km=dist_km, time_days=time_seconds / 86400
+        )
+
         radii = spice.bodvrd(sys.secondary, "RADII", 3)[1][0]
-        self.r_secondary = units.pos_to_canonical(radii * u.km)
+        self.r_secondary = units.pos_to_canonical(radii * u.km, sys.canonical_units)
 
     def _run_continuation(self):
         """Outer pseudo-arclength loop. Populates self.orbits."""
         cont = self.cfg.continuation
-        Tp_lim = units.time_to_canonical(cont.max_period_days * u.d)
+        Tp_lim = units.time_to_canonical(
+            cont.max_period_days * u.d, self.cfg.system.canonical_units
+        )
         stm_identity = np.reshape(np.eye(6), (1, 36))[0]
 
         # Free variables: [x0, z0, vy0, T/2]
@@ -75,7 +84,9 @@ class Family:
                 print("Corrector did not converge.")
                 break
 
-            period_days = units.time_to_dimensional(2 * X[-1]).to_value(u.day)
+            period_days = units.time_to_dimensional(
+                2 * X[-1], self.cfg.system.canonical_units
+            ).to_value(u.day)
             print(f"Period: {period_days:.4f} days")
 
             states, times, valid = self._propagate_and_validate(X)
@@ -87,6 +98,7 @@ class Family:
                     vy0=X[2],
                     period=times[-1],
                     mu_star=self.mu_star,
+                    canonical_units=self.cfg.system.canonical_units,
                 )
                 # Store already-computed trajectory so propagate() isn't needed again
                 orbit.states = states
