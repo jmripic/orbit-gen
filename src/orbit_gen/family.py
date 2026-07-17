@@ -112,7 +112,7 @@ class Family:
             print(f"Orbits found: {len(self.orbits)}\n")
 
         if not self.orbits:
-            raise RuntimeError("All discovered orbits intersect the secondary body")
+            raise RuntimeError("Continuation failed")
 
     def _correct_orbit(self, X: list, stm_identity: np.ndarray) -> tuple[list, float]:
         """Single-shooting differential corrector
@@ -140,16 +140,18 @@ class Family:
         for i in range(cont.max_iter):
             X_full = np.append(X, stm_identity).tolist()
 
-            Fx, Phi = eom.constraint(X_full, self.mu_star)
+            Fx, state_half_T, Phi = eom.constraint(X_full, self.mu_star)
             error = np.linalg.norm(Fx)
-
-            print(f"  iter {i+1:2d} | error = {error:.3e}")
 
             if error < cont.eps:
                 break
 
-            dFx = eom.jacobian(X, self.mu_star, self.m1, self.m2, Phi)
-            X = X - dFx.T @ (np.linalg.inv(dFx @ dFx.T) @ Fx)
+            dFx = eom.jacobian(X, self.mu_star, self.m1, self.m2, state_half_T, Phi)
+            X = X - 0.5 * dFx.T @ (np.linalg.inv(dFx @ dFx.T) @ Fx)
+
+            print(
+                f"  iter {i+1:2d} | error = {error:.3e} | cond = {np.linalg.cond(dFx @ dFx.T):.2e}"
+            )
 
         return X, error
 
@@ -183,8 +185,10 @@ class Family:
         positions = states[:, 0:3]
         r_mag = np.linalg.norm(positions, axis=1)
 
-        perilune_km = units.pos_to_dimensional(min(r_mag)).to_value(u.km)
-        print(f"  Perilune: {perilune_km:.2f} km")
+        periapsis_km = units.pos_to_dimensional(
+            min(r_mag), self.cfg.system.canonical_units
+        ).to_value(u.km)
+        print(f"  Periapsis: {periapsis_km:.2f} km")
 
         valid = not np.any(r_mag < self.r_secondary)
         if not valid:

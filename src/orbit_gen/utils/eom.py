@@ -104,7 +104,7 @@ def propagate(free_var, mu_star):
                 - [x0, z0, vy0, T, STM_flat] where STM_flat has length 36
                 (flattened 6×6 STM, total state dimension = 42).
         mu_star (float):
-            CR3BP mass parameter (normalized secondary mass).
+            CR3BP mass parameter.
 
     Returns:
         states (ndarray):
@@ -145,6 +145,8 @@ def constraint(free_var, mu_star):
         Fx (ndarray, shape (3,)):
             Periodicity constraint residuals evaluated at T/2:
             typically enforcing symmetry conditions such as [y, vx, vz].
+        state_half_T (ndarray, shape (6,)):
+            State evaluated at T/2.
         Phi (ndarray, shape (6, 6)):
             State transition matrix evaluated at T/2.
     """
@@ -159,10 +161,12 @@ def constraint(free_var, mu_star):
     else:
         Phi = None
 
-    return Fx, Phi
+    state_half_T = state[0:6]
+
+    return Fx, state_half_T, Phi
 
 
-def jacobian(free_var, mu_star, m1, m2, Phi):
+def jacobian(free_var, mu_star, m1, m2, state_half_T, Phi):
     """Compute Jacobian of periodicity constraints for differential correction
 
     Evaluates the sensitivity matrix dFx/dX for the CR3BP periodicity constraints
@@ -177,6 +181,8 @@ def jacobian(free_var, mu_star, m1, m2, Phi):
             Normalized primary mass (1 - mu_star).
         m2 (float):
             Normalized secondary mass (mu_star).
+        state_half_T (ndarray, shape (6,)):
+            State evaluated at T/2.
         Phi (ndarray, shape (6, 6)):
             State transition matrix evaluated at T/2.
 
@@ -193,8 +199,7 @@ def jacobian(free_var, mu_star, m1, m2, Phi):
         ]
     )
 
-    X = [free_var[0], 0, free_var[1], 0, free_var[2], 0]
-    dw = crtbp_eom(free_var[-1], X, mu_star)
+    dw = crtbp_eom(free_var[-1], state_half_T, mu_star)
     ddT = np.array([dw[1], dw[3], dw[5]])
 
     dFx = np.zeros([3, 4])
@@ -227,7 +232,7 @@ def continuation_constraint(w, z, sol_predictor, mu_star):
             condition, suitable for nonlinear root solving.
     """
 
-    Fx, _ = constraint(w, mu_star)
+    Fx, _, _ = constraint(w, mu_star)
     zeq = z.T @ (w - sol_predictor)
     return np.append(Fx, zeq)
 
