@@ -6,15 +6,15 @@
 # NOTE: By default, the package looks to "orbit_config.yaml" for the
 # desired configuration. Please create the file using this template.
 
-system: EM
-preset: EM_L1
+system: SE
+preset: SE_L2_Northern_Halo
 
 # Continuation Parameters
-max_iter: 50
+max_iter: 100
 eps: 1.0e-6
 step: 0.01
-max_solutions: 10
-max_period_days: 30.0
+max_solutions: 20
+max_period_days: 10000.0
 
 # Output
 output_dir: results
