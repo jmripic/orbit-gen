@@ -89,12 +89,19 @@ class RunConfig:
         system = _SYSTEMS[data["system"]]
         ic = PRESETS[data["preset"]]
 
+        if system.name == "EM":
+            period_max_default = 50.0
+        elif system.name == "SE":
+            period_max_default = 500.0
+        else:
+            raise RuntimeError("Unknown system name")
+
         continuation = ContinuationConfig(
-            max_iter=data.get("max_iter", 50),
+            max_iter=data.get("max_iter", 100),
             eps=data.get("eps", 1e-6),
             step=data.get("step", 0.01),
-            max_solutions=data.get("max_solutions", 10),
-            max_period_days=data.get("max_period_days", 30.0),
+            max_solutions=data.get("max_solutions", 20),
+            max_period_days=data.get("max_period_days", period_max_default),
         )
 
         return cls(

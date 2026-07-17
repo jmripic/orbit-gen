@@ -45,9 +45,9 @@ PRESETS: dict[str, OrbitIC] = {
     ),
     "SE_L2_Northern_Halo": OrbitIC(
         name="SE_L2_Northern_Halo",
-        x0=1.0112461245,
-        z0=0.0013915124,
-        vy0=-0.0091873264,
-        half_period=3.064 / 2,
+        x0=1.0082893998277027,
+        z0=0.011434182696839030,
+        vy0=-0.015179690420484332,
+        half_period=2.7047531095113841 / 2,
     ),
 }
