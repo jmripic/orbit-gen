@@ -70,8 +70,7 @@ def crtbp_eom(t, w, mu_star):
         )
         dydz = 3 * m1 * y * z / r1_mag**5 + 3 * m2 * y * z / r2_mag**5
         dzdz = (
-            1
-            - m1 / r1_mag**3
+            -m1 / r1_mag**3
             - m2 / r2_mag**3
             + 3 * m1 * z**2 / r1_mag**5
             + 3 * m2 * z**2 / r2_mag**5
@@ -81,7 +80,8 @@ def crtbp_eom(t, w, mu_star):
         Z = np.zeros([3, 3])
         I = np.identity(3)
         A = np.array([[dxdx, dxdy, dxdz], [dxdy, dydy, dydz], [dxdz, dydz, dzdz]])
-        J = np.block([[Z, I], [A, Z]])
+        Omega = np.array([[0, 2, 0], [-2, 0, 0], [0, 0, 0]])
+        J = np.block([[Z, I], [A, Omega]])
         dPhi = np.reshape(J @ Phi, (1, 36))[0]
         dw = np.append([vx, vy, vz, ax, ay, az], dPhi)
     else:
@@ -166,7 +166,7 @@ def constraint(free_var, mu_star):
     return Fx, state_half_T, Phi
 
 
-def jacobian(free_var, mu_star, m1, m2, state_half_T, Phi):
+def jacobian(free_var, mu_star, state_half_T, Phi):
     """Compute Jacobian of periodicity constraints for differential correction
 
     Evaluates the sensitivity matrix dFx/dX for the CR3BP periodicity constraints
@@ -177,10 +177,6 @@ def jacobian(free_var, mu_star, m1, m2, state_half_T, Phi):
             Free-variable vector [x0, z0, vy0, T/2].
         mu_star (float):
             CR3BP mass parameter (normalized secondary mass).
-        m1 (float):
-            Normalized primary mass (1 - mu_star).
-        m2 (float):
-            Normalized secondary mass (mu_star).
         state_half_T (ndarray, shape (6,)):
             State evaluated at T/2.
         Phi (ndarray, shape (6, 6)):
