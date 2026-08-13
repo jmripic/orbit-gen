@@ -146,8 +146,8 @@ class Family:
             if error < cont.eps:
                 break
 
-            dFx = eom.jacobian(X, self.mu_star, self.m1, self.m2, state_half_T, Phi)
-            X = X - 0.5 * dFx.T @ (np.linalg.inv(dFx @ dFx.T) @ Fx)
+            dFx = eom.jacobian(X, self.mu_star, state_half_T, Phi)
+            X = X - 0.3 * dFx.T @ (np.linalg.inv(dFx @ dFx.T) @ Fx)
 
             print(
                 f"  iter {i+1:2d} | error = {error:.3e} | cond = {np.linalg.cond(dFx @ dFx.T):.2e}"
