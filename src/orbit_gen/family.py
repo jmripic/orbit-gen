@@ -248,7 +248,7 @@ class Family:
             print("Singular Jacobian — stopping continuation.")
             return X_new, z, False
 
-    def plot(self, show: bool = True):
+    def plot(self):
         """Plot all orbits in the family on a single 3D figure
 
         Generates a 3D visualization of all stored periodic orbits in the family,
@@ -269,8 +269,7 @@ class Family:
 
         ax.set_title(f"{self.cfg.ic.name} family — {len(self.orbits)} orbits")
 
-        if show:
-            plt.show()
+        plt.show()
 
         return ax
 
