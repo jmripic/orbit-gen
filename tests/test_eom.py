@@ -1,21 +1,7 @@
 import pytest
-import logging
 import numpy as np
 
 from orbit_gen.utils import eom
-
-seed = np.random.SeedSequence().entropy
-rng = np.random.default_rng(seed)
-logging.warning(f"RNG seed: {seed}")
-
-free_var = [
-    rng.uniform(0.7, 0.9),
-    rng.uniform(-0.1, 0.1),
-    rng.uniform(0.1, 0.4),
-    rng.uniform(1.0, 3.0),
-]
-
-mu_star = 0.0121505856
 
 
 def test_jacobi_constant_runs():
@@ -26,7 +12,7 @@ def test_jacobi_constant_runs():
     assert isinstance(result, float)
 
 
-def test_propagate_shapes_types():
+def test_propagate_shapes_types(free_var, mu_star):
     # Ensures propagate returns the correct shapes and types
     states, times = eom.propagate(free_var, mu_star)
 
@@ -38,7 +24,7 @@ def test_propagate_shapes_types():
     assert times.shape[0] == states.shape[0]
 
 
-def test_jacobi_constant_conserved_along_trajectory():
+def test_jacobi_constant_conserved_along_trajectory(free_var, mu_star):
     # Ensures Jacobi constant remains roughly constant throughout
     # a trajectory.
     states, _ = eom.propagate(free_var, mu_star)
@@ -54,7 +40,7 @@ def test_jacobi_constant_conserved_along_trajectory():
         assert value == pytest.approx(jc_0)
 
 
-def test_velocity_passthrough_and_autonomous():
+def test_velocity_passthrough_and_autonomous(mu_star):
     # dx/dt, dy/dt, dz/dt must equal vx, vy, vz directly.
     w = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
 
@@ -67,7 +53,7 @@ def test_velocity_passthrough_and_autonomous():
     np.testing.assert_array_equal(dw_t0, dw_t100)
 
 
-def test_stm_jacobian():
+def test_stm_jacobian(mu_star):
     # With Phi=I, crtbp_eom returns dPhi = J. Verify against numerical
     # finite difference across all 6 state components.
     w_state = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]
@@ -86,7 +72,7 @@ def test_stm_jacobian():
     np.testing.assert_allclose(J_analytic, J_numeric, atol=1e-5)
 
 
-def test_constraint_output():
+def test_constraint_output(free_var, mu_star):
     # Ensures constraint returns correct types/shapes
     # STM not included
     states, _ = eom.propagate(free_var, mu_star)
@@ -117,7 +103,7 @@ def test_constraint_output():
     np.testing.assert_array_equal(state_half_T, final_state[0:6])
 
 
-def test_constraint_time_derivative_finite_difference():
+def test_constraint_time_derivative_finite_difference(free_var, mu_star):
     # Verify against numerical finite difference
     Fx0, state_half_T0, _ = eom.constraint(free_var, mu_star)
 
