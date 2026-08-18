@@ -102,9 +102,9 @@ uv run pytest
 
 The repo includes a driver script, `scripts/crtbpModel.py`,
 which reads `orbit_config.yaml` from the project root, runs continuation,
-saves results, and shows plots:
+saves results, and shows plots.
 
-An example configuration file (`orbit_config.example.yaml`), is included in the repository, and `orbit_config.yaml` can be created and used by running
+An example configuration file (`orbit_config.example.yaml`), is included in the repository, and `orbit_config.yaml` can be created and used by running:
 
 ```bash
 cp orbit_config.example.yaml orbit_config.yaml   # edit as needed
