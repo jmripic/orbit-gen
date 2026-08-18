@@ -74,7 +74,7 @@ PRESETS: dict[str, OrbitIC] = {
     "SE_L2_Large_Lyapunov": OrbitIC(
         name="SE_L2_Large_Lyapunov",
         x0=1.0437961011210057,
-        z0=4.1995579896505956e-322,
+        z0=0,
         vy0=-8.2206717351832326e-2,
         half_period=8.3852287199494260 / 2,
     ),
