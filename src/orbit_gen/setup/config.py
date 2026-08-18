@@ -34,11 +34,11 @@ class ContinuationConfig:
 
     """
 
-    max_iter: int = 50
+    max_iter: int = 1000
     eps: float = 1e-6
     step: float = 0.01
     max_solutions: int = 10
-    max_period_days: float = 30.0
+    max_period_days: float = 1000.0
 
 
 @dataclass
