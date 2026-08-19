@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "orbit-gen"
-version = "0.1.0"
+version = "0.1.1"
 description = "Tools for generating families and orbits in the CR3BP"
 readme = "README.md"
 license = "MIT"
@@ -12,9 +12,9 @@ license-files = ["LICENSE"]
 authors = [
     { name = "Jayden Ripic", email = "jmr595@cornell.edu" },
 ]
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
-    "astropy>=7.2.0",
+    "astropy>=7 2.0",
     "matplotlib>=3.10.9",
     "numpy>=2.4.6",
     "platformdirs>=4.10.0",
@@ -33,3 +33,6 @@ dev = [
 [tool.pytest.ini_options]
 log_cli = true
 log_cli_level = "WARNING"
+
+[project.urls]
+Repository = "https://github.com/jmripic/orbit-gen"
