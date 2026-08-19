@@ -14,7 +14,7 @@ It currently supports various families in the Earth-Moon and Sun-Earth systems.
 ```bash
 pip install orbit-gen
 ```
-Requires Python 3.12+.
+Requires Python 3.11+.
 
 ## Usage
 
@@ -48,7 +48,7 @@ if cfg.show_plots:
 
 > **Note:** constructing `Family(cfg)` runs the continuation, but does not save or plot results on its own — call `.save()` / `.plot()` explicitly, as shown above.
 
-### Programmatically
+### Programmatically; without a config file
 
 ```python
 from orbit_gen import Family, RunConfig
@@ -114,3 +114,12 @@ uv run python scripts/crtbpModel.py
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+
+
+
+Credits and Acknowledgements
+------------------------------
+Created by Jayden Ripic
+
+The differential correction and continuation algorithms were adapted from [SIOSlab/starlift](https://github.com/SIOSlab/starlift), written by Grace Genszler
