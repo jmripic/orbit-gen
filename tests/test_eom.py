@@ -107,7 +107,7 @@ def test_constraint_time_derivative_finite_difference(free_var, mu_star):
     # Verify against numerical finite difference
     Fx0, state_half_T0, _ = eom.constraint(free_var, mu_star)
 
-    eps = 1e-6
+    eps = 1e-7
     free_var_pert = list(free_var)
     free_var_pert[3] += eps
     Fx_pert, _, _ = eom.constraint(free_var_pert, mu_star)
