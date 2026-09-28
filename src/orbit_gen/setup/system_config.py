@@ -7,7 +7,7 @@ class CanonicalUnits:
     """Characteristic length/time scales for a specific CR3BP system."""
 
     dist_km: float  # canonical distance [km]
-    time_days: float | None = None  # canonical time / (2*pi) [days]
+    time_days: float | None = None  # canonical time unit [days]
 
     @property
     def du_m(self) -> float:
@@ -25,6 +25,8 @@ class SystemConfig:
             Primary body in the CR3BP
         secondary (str):
             Secondary body in the CR3BP
+        canonical_units (CanonicalUnits):
+            Contains characteristic length/time scales for the system
 
     .. note::
 

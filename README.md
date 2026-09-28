@@ -46,7 +46,7 @@ if cfg.show_plots:
     fam.plot()
 ```
 
-> **Note:** constructing `Family(cfg)` runs the continuation, but does not save or plot results on its own — call `.save()` / `.plot()` explicitly, as shown above.
+> **Note:** Constructing `Family(cfg)` runs the continuation, but does not save or plot results on its own — call `.save()` / `.plot()` explicitly, as shown above.
 
 ### Programmatically; without a config file
 
@@ -88,7 +88,9 @@ data["mu_star"]             # System mass ratio
 
 ## Contributing
 
-Clone or download the repository and run
+> **NOTE:** Use of `uv` is recommended for contributing to the repository. Installation instructions can be found [here](https://docs.astral.sh/uv/getting-started/installation/).
+
+Create a fork of the repository, clone the fork onto your local system, and run
 
 ```bash
 uv sync

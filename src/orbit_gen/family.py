@@ -21,6 +21,8 @@ class Family:
             Full run configuration.
 
     Attributes:
+        cfg (RunConfig):
+            Full run configuration.
         mu_star (float):
             CR3BP mass ratio.
         m1 (float):
