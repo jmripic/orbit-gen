@@ -7,7 +7,7 @@
 # desired configuration. Please create the file using this template.
 
 system: SE
-preset: SE_L2_Northern_Halo
+preset: L2_Northern_Halo
 
 # Continuation Parameters
 max_iter: 100
@@ -20,3 +20,4 @@ max_period_days: .inf
 output_dir: results
 show_plots: false
 verbose: true
+

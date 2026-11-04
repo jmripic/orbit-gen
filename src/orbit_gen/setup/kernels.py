@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.request import urlopen
 from urllib.error import URLError
+from urllib.request import urlopen
 
 from platformdirs import user_cache_dir
 

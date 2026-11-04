@@ -1,8 +1,8 @@
-import numpy as np
 import astropy.units as u
+import numpy as np
 
-from orbit_gen.utils import eom, units
 from orbit_gen.setup.system_config import CanonicalUnits
+from orbit_gen.utils import eom, units
 
 
 class Orbit:

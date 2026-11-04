@@ -129,7 +129,7 @@ def propagate(free_var, mu_star, dense=True, r_min=None):
         def too_close(t, w, mu_star):
             return (w[0] - 1 + mu_star) ** 2 + w[1] ** 2 + w[2] ** 2 - r_min**2
 
-        setattr(too_close, "terminal", True)
+        too_close.terminal = True
         events = too_close
 
     sol = solve_ivp(

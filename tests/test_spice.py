@@ -1,5 +1,5 @@
-import spiceypy as spice
 import pytest
+import spiceypy as spice
 
 
 def test_spice_sun_gm(spice_furnish):

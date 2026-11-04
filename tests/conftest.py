@@ -1,12 +1,12 @@
 import logging
 
-import pytest
 import numpy as np
+import pytest
 import spiceypy as spice
 
 from orbit_gen.orbit import Orbit
-from orbit_gen.setup.system_config import CanonicalUnits
 from orbit_gen.setup.kernels import ensure_kernels
+from orbit_gen.setup.system_config import CanonicalUnits
 
 
 @pytest.fixture(scope="session")

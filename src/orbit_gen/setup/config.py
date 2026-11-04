@@ -3,10 +3,10 @@ from pathlib import Path
 
 import yaml
 
-from .orbit_ic import OrbitIC
-from .system_config import SystemConfig, EM_SYSTEM, SE_SYSTEM
-from .presets import PRESETS
 from .kernels import ensure_kernels
+from .orbit_ic import OrbitIC
+from .presets import PRESETS
+from .system_config import EM_SYSTEM, SE_SYSTEM, SystemConfig
 
 _SYSTEMS = {
     "EM": EM_SYSTEM,
@@ -90,7 +90,17 @@ class RunConfig:
             data = yaml.safe_load(yp)
 
         system = _SYSTEMS[data["system"]]
-        ic = PRESETS[data["preset"]]
+
+        if data["preset"] not in PRESETS:
+            raise ValueError(f'Unknown preset: {data["preset"]}')
+        if data["system"] not in PRESETS[data["preset"]]:
+            available = list(PRESETS[data["preset"]].keys())
+            raise ValueError(
+                f'Preset {data["preset"]} is not available for system {data["system"]}. '
+                f'Available systems: {available}'
+            )
+        
+        ic = PRESETS[data["preset"]][data["system"]]
 
         names = {f.name for f in fields(ContinuationConfig)}
         continuation = ContinuationConfig(

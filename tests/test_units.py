@@ -1,5 +1,5 @@
-import pytest
 import astropy.units as u
+import pytest
 
 from orbit_gen.utils import units
 
