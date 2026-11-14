@@ -30,7 +30,7 @@ Requires Python 3.11+.
 ```yaml
 # orbit_config.yaml
 system: SE                      # "EM" (Earth-Moon) or "SE" (Sun-Earth)
-preset: SE_L2_Northern_Halo
+preset: L2_Northern_Halo
 
 max_iter: 100                   # Maximum Newton iterations for a single differential correct attempt
 eps: 1.0e-10                    # Convergence tolerance on the residual norm (corrector and continuation steps)
@@ -69,16 +69,13 @@ from orbit_gen import Family, RunConfig
 from orbit_gen.setup.system_config import SE_SYSTEM
 from orbit_gen.setup.presets import PRESETS
 
-cfg = RunConfig(system=SE_SYSTEM, ic=PRESETS["SE_L2_Northern_Halo"])
+cfg = RunConfig(system=SE_SYSTEM, ic=PRESETS["L2_Northern_Halo"]["SE"])
 fam = Family(cfg)
 fam.save()
 ```
 
 Available preset keys (see `orbit_gen.setup.presets.PRESETS`):
-`EM_L2_Northern_Halo`, `EM_DRO_1`, `EM_DRO_2`, `EM_L1`, `EM_Butterfly`,
-`EM_Unnamed_1`, `SE_L2_Northern_Halo`, `SE_L1_Vertical`, `SE_L2_Lyapunov`,
-`SE_L2_Small_Lyapunov`, `SE_L2_Large_Lyapunov`, `SE_L2_Southern_Halo`,
-`SE_Butterfly`, `SE_Dragonfly`.
+`L2_Northern_Halo`[`SE`,`EM`], `L2_Northern_Halo`[`SE`,`EM`], `L2_Southern_Halo`[`SE`,`EM`], `DRO`[`SE`,`EM`], `L2_Lyapunov`[`SE`,`EM`], `Northern_Butterfly`[`SE`,`EM`], `Northern_Dragonfly`[`SE`,`EM`], `3_1_Lunar_Resonant_Planar`[`EM`], `L2_Double_Loop`[`SE`].
 
 ## Supported Systems
 

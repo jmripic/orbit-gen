@@ -382,7 +382,7 @@ class Family:
         plt.show()
 
     def save(self):
-        """Save all orbit ICs, periods, and mu_star to cfg.output_path."""
+        """Save all orbit ICs, periods and mu_star to cfg.output_path."""
         self.cfg.output_dir.mkdir(parents=True, exist_ok=True)
 
         states = np.array([o.states[0, :] for o in self.orbits])
