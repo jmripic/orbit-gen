@@ -73,6 +73,10 @@ def test_save_roundtrip(tmp_path, mu_star, ic, cu):
     assert "ic" in data
     assert "period" in data
     assert "mu_star" in data
+    assert "jacobi_constant" in data
+    assert "stability_index" in data
     np.testing.assert_allclose(data["period"], 2 * ic[3])
     np.testing.assert_allclose(data["mu_star"], mu_star)
     np.testing.assert_array_equal(data["ic"], orbit.states[0, :])
+    np.testing.assert_allclose(data["jacobi_constant"], orbit.jacobi_constant)
+    np.testing.assert_allclose(data["stability_index"], orbit.stability_index)
